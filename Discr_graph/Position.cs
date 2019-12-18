@@ -6,17 +6,5 @@ using System.Threading.Tasks;
 
 namespace Discr_graph
 {
-    [Serializable]
-    class Position
-    {
-        public double X;
-        public double Y;
-        public Position(double x, double y)
-        {
-            X = x;
-            Y = y;
-        }
-
-    }
-
+   
 }

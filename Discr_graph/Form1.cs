@@ -14,9 +14,11 @@ namespace Discr_graph
 {
     public partial class Form1 : Form
     {
-        Graph g = new Graph(5, true);
+        Graph g = null;
         List<Graph> savedG = new List<Graph>();
         List<string> namesSaved = new List<string>();
+        List<int> path = new List<int>();
+
         public Form1()
         {
             InitializeComponent();
@@ -27,7 +29,6 @@ namespace Discr_graph
             saveLoad_panel.Location = matrix_panel.Location;
             core_panel.Location = matrix_panel.Location;
             deikstr_panel.Location = matrix_panel.Location;
-
         }
 
         private void Action1()
@@ -58,12 +59,20 @@ namespace Discr_graph
 
         private void button1_Click(object sender, EventArgs e)
         {
+            path.Clear();
             Action1();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //showNORMatrix(Int32.Parse(textBox2.Text),);
+            path.Clear();
+            path.Add(1);
+            path.Add(4);
+            path.Add(0);
+            path.Add(3);
+            path.Add(2);
+            path.Add(5);
+            Action1();
         }
         private void Update(object sender, PaintEventArgs e)
         {
@@ -71,16 +80,53 @@ namespace Discr_graph
             // int n = 8;
             //  if (textBox1.Text != "")
             // n = Int32.Parse(textBox1.Text);
-               g = new Graph(10, true);
-            List<int> ccc = new List<int>();
-            ccc.Add(1);
-            ccc.Add(3);
-            ccc.Add(5);
-            ccc.Add(7);
+        //    g = new Graph(10, true);
+
             if (g != null)
             {
-                GD2.DrawGraph(e, g, ccc);
+                if (path.Count != 0)
+                {
+                    try
+                    {
+                        GD2.DrawGraph(e, g, path, true);
+                    }
+                    catch (NoPathException)
+                    {
+                        ShowError("Нет такого пути");
+                        path.Clear();
+                        Update(sender, e);
+                    }
+                }
+                else
+                {
+                    GD2.DrawGraph(e, g, checkBox2.Checked);
+                }
             }
+        }
+        private void RandomLines(int n)
+        {
+            Random rand = new Random();
+            TextBox t = null;
+            for (int i = 1; i <= 10; i++)
+            {
+                int j = 1;
+                if (!orgraph_ch1.Checked) j = i;
+                for (; j <= 10; j++)
+                {
+                    if (rand.Next(0, 11 - n) == 0 && i!=j)
+                    {
+                        t = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];
+                        t.Text = rand.Next(1,99).ToString();
+                    }
+                }
+            }
+        }
+        private void RandomLines()
+        {
+            ClearHoles();
+            RandomLines((int)numericUpDown1.Value);
+            MakeGraph();
+            Action1();
         }
 
         private void showTask(int n)
@@ -222,14 +268,15 @@ namespace Discr_graph
         }
         private void GraphToMatrix(Graph g)
         {
-            if (g.Count > 10) { ShowError("Больше 10 элементов");return; }
+            if (g.Count > 10) { ShowError("Больше 10 элементов"); return; }
+            count_numeric1.Value = g.Count;
             TextBox t = null;
             for (int i = 1; i <= g.Count; i++)
             {
                 for (int j = 1; j <= g.Count; j++)
                 {
                     t = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];
-                    t.Text = g.Matrix[i-1,j-1].ToString();
+                    t.Text = g.Matrix[i - 1, j - 1].ToString();
                 }
             }
         }
@@ -283,7 +330,7 @@ namespace Discr_graph
             BinaryFormatter bf = new BinaryFormatter();
             while (f1.Length != f1.Position)
             {
-               Graph st = (Graph)bf.Deserialize(f1);
+                Graph st = (Graph)bf.Deserialize(f1);
                 string str = (string)bf.Deserialize(f1);
                 savedG.Add(st);
                 namesSaved.Add(str);
@@ -293,12 +340,13 @@ namespace Discr_graph
         }
 
 
-            private void MakeGraph()
+        private void MakeGraph()
         {
+            path.Clear();
             g = new Graph(GetMatrix((int)count_numeric1.Value), orgraph_ch1.Checked);
             Action1();
         }
-        private void UpdateListbox(ListBox list1, List<string> list2 )
+        private void UpdateListbox(ListBox list1, List<string> list2)
         {
             list1.Items.Clear();
             foreach (var i in list2)
@@ -310,6 +358,26 @@ namespace Discr_graph
         {
             textBox3.Text = g.Count.ToString();
             textBox4.Text = g.Lines.ToString();
+            checkBox1.Checked = g.isOrGraph;
+        }
+        private void SupplyMatrix()
+        {
+            TextBox t = null;
+            TextBox t1 = null;
+            for (int i = 1; i <= count_numeric1.Value; i++)
+            {
+                for (int j = 1; j <= count_numeric1.Value; j++)
+                {
+                    if (i > j)
+                    {
+                        t1 = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];                      
+                        t = (TextBox)panel1.Controls["textBox" + (j.ToString()) + (i.ToString())];
+                        if ((t.Text == "0" || t.Text == "") && (t1.Text != "0" || t1.Text == ""))
+                            t.Text = t1.Text;
+                    }
+                }
+            }
+
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -331,6 +399,8 @@ namespace Discr_graph
         {
             if (orgraph_ch1.Checked) showORMatrix((int)count_numeric1.Value);
             else showNORMatrix((int)count_numeric1.Value);
+
+            button8.Visible = !orgraph_ch1.Checked;
         }
 
         private void count_numeric1_ValueChanged(object sender, EventArgs e)
@@ -405,6 +475,21 @@ namespace Discr_graph
             {
                 showGInfo(savedG[listBox1.SelectedIndex]);
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            RandomLines();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            SupplyMatrix();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Action1();
         }
     }
 }

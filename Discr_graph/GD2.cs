@@ -34,38 +34,47 @@ namespace Discr_graph
             if (weights)
                 DrawWeights(e, g);
         }
-        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds)
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds, bool path)
         {
             if (g.Positions == null)
                 CalcPositions(g);
-            DrawLines(e, g, inds);
+            DrawLines(e, g, inds, path);
             DrawNodes(e, g, inds);
             DrawNames(e, g, inds);
-            DrawWeights(e, g, inds);
+            if (path)
+            {
+                if (!g.isOrGraph)
+                    DrawWeightsPathNOR(e, g, inds);
+                else
+                    DrawWeightsPathOR(e, g, inds);
+            }
+            else
+                DrawWeights(e, g, inds);
+
         }
 
-        public static void DrawCircle(PaintEventArgs e, int size, int x, int y, Color c)
+        private static void DrawCircle(PaintEventArgs e, int size, int x, int y, Color c)
         {
             System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(c);
             e.Graphics.FillEllipse(myBrush, new Rectangle(x + offsetX - size / 2, y + offsetY - size / 2, size, size));
             myBrush.Dispose();
             //  formGraphics.Dispose();
         }
-        public static void DrawLine(PaintEventArgs e, int x1, int y1, int x2, int y2, Color c)
+        private static void DrawLine(PaintEventArgs e, int x1, int y1, int x2, int y2, Color c)
         {
             System.Drawing.Pen myBrush = new Pen(c, strokeWidth);
             e.Graphics.DrawLine(myBrush, x1 + offsetX, y1 + offsetY, x2 + offsetX, y2 + offsetY);
             myBrush.Dispose();
             //  formGraphics.Dispose();
         }
-        public static void DrawLine(PaintEventArgs e, Position a, Position b, Color c)
+        private static void DrawLine(PaintEventArgs e, Position a, Position b, Color c)
         {
             System.Drawing.Pen myBrush = new Pen(c, strokeWidth);
             e.Graphics.DrawLine(myBrush, (int)a.X + offsetX, (int)a.Y + offsetY, (int)b.X + offsetX, (int)b.Y + offsetY);
             myBrush.Dispose();
             //  formGraphics.Dispose();
         }
-        public static void DrawArrow(PaintEventArgs e, Position a, Position b, Color c)
+        private static void DrawArrow(PaintEventArgs e, Position a, Position b, Color c)
         {
             System.Drawing.Drawing2D.AdjustableArrowCap bigArrow = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5);
 
@@ -92,7 +101,7 @@ namespace Discr_graph
         {
             e.Graphics.Clear(Color.Transparent);
         }
-        public static void CalcPositions(Graph g)
+        private static void CalcPositions(Graph g)
         {
             Position[] Npositions = new Position[g.Count];
             int k = 0;
@@ -105,7 +114,7 @@ namespace Discr_graph
             }
             g.Positions = Npositions;
         }
-        public static void DrawNodes(PaintEventArgs e, Graph g)
+        private static void DrawNodes(PaintEventArgs e, Graph g)
         {
             for (int i = 0; i < g.Count; i++)
             {
@@ -113,7 +122,7 @@ namespace Discr_graph
                 DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, outlineColor);
             }
         }
-        public static void DrawNodes(PaintEventArgs e, Graph g, List<int> inds)
+        private static void DrawNodes(PaintEventArgs e, Graph g, List<int> inds)
         {
             Color Col = fillcolor;
             for (int i = 0; i < g.Count; i++)
@@ -128,7 +137,7 @@ namespace Discr_graph
             }
         }
 
-        public static void DrawNames(PaintEventArgs e, Graph g)
+        private static void DrawNames(PaintEventArgs e, Graph g)
         {
             Font drawFont = new Font("Arial", fontSize);
             System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(namesColor);
@@ -138,7 +147,7 @@ namespace Discr_graph
             }
             myBrush.Dispose();
         }
-        public static void DrawNames(PaintEventArgs e, Graph g, List<int> inds)
+        private static void DrawNames(PaintEventArgs e, Graph g, List<int> inds)
         {
             Color Col = fillcolor;
             Font drawFont = new Font("Arial", fontSize);
@@ -154,7 +163,7 @@ namespace Discr_graph
                 e.Graphics.DrawString(g.names[i], drawFont, myBrush, (float)(g.Positions[i].X + offsetX - (g.names[i].Length * fontSize * 0.6)), (float)(g.Positions[i].Y + offsetY - (fontSize * 0.62)));
             }
         }
-        public static void DrawLines(PaintEventArgs e, Graph g)
+        private static void DrawLines(PaintEventArgs e, Graph g)
         {
             if (!g.isOrGraph)
             {
@@ -165,15 +174,26 @@ namespace Discr_graph
                 DrawLinesOR(e, g);
             }
         }
-        public static void DrawLines(PaintEventArgs e, Graph g, List<int> inds)
+        private static void DrawLines(PaintEventArgs e, Graph g, List<int> inds, bool path)
         {
             if (!g.isOrGraph)
             {
-                DrawLinesNOR(e, g, inds);
+                if (path)
+                {
+                    DrawLinesNOR(e, g);
+                    DrawLinesNORPath(e, g, inds);
+                }else
+                    DrawLinesNOR(e, g, inds);
             }
             else
             {
-                DrawLinesOR(e, g, inds);
+                if (path)
+                {
+                    DrawLinesOR(e, g);
+                    DrawLinesORPath(e, g, inds);
+                }
+                else
+                    DrawLinesOR(e, g, inds);
             }
         }
 
@@ -190,21 +210,51 @@ namespace Discr_graph
         }
         private static void DrawLinesNOR(PaintEventArgs e, Graph g, List<int> inds)
         {
-            Color Col = fillcolor;
+            Color Col = outlineColor;
             for (int i = 0; i < g.Count; i++)
             {
 
                 for (int j = i + 1; j < g.Count; j++)
                 {
-                    if (inds.Contains(i) && inds.Contains(j))
-                        Col = hilightColor;
-                    else
-                        Col = outlineColor;
+
+                        if (inds.Contains(i) && inds.Contains(j))
+                            Col = hilightColor;
+                        else
+                            Col = outlineColor;
 
                     if (g.Matrix[i, j] != 0)
                         DrawLine(e, g.Positions[i], g.Positions[j], Col);
                 }
-
+            }
+        }
+        private static void DrawLinesNORPath(PaintEventArgs e, Graph g, List<int> inds)
+        {
+            for (int i = 1; i < inds.Count; i++)
+            {
+                if (inds[i] >= g.Count) new NoPathException("Пути нет");
+                if (g.Matrix[inds[i - 1], inds[i]] != 0 || g.Matrix[inds[i], inds[i - 1]] != 0)
+                {
+                    DrawLine(e, g.Positions[inds[i - 1]], g.Positions[inds[i]], hilightColor);
+                }
+                else
+                {
+                   throw new NoPathException("Пути нет");
+                }
+            }
+        }
+        private static void DrawLinesORPath(PaintEventArgs e, Graph g, List<int> inds)
+        {
+            for (int i = 1; i < inds.Count; i++)
+            {
+                if (inds[i] >= g.Count) new NoPathException("Пути нет");
+                if (g.Matrix[inds[i - 1], inds[i]] != 0)
+                {
+                    DrawArrow(e, g.Positions[inds[i - 1]], g.Positions[inds[i]], hilightColor);
+                }
+                else
+                {
+                    throw new NoPathException("Пути нет");
+                }
             }
         }
         private static void DrawLinesOR(PaintEventArgs e, Graph g)
@@ -225,18 +275,18 @@ namespace Discr_graph
             Color Col = fillcolor;
             for (int i = 0; i < g.Count; i++)
             {
-                {
-                    for (int j = 0; j < g.Count; j++)
-                    {
-                        if (inds.Contains(i) && inds.Contains(j))
-                            Col = hilightColor;
-                        else
-                            Col = arrowColor;
 
-                        if (g.Matrix[i, j] != 0)
-                            DrawArrow(e, g.Positions[i], g.Positions[j], Col);
-                    }
+                for (int j = 0; j < g.Count; j++)
+                {
+                    if (inds.Contains(i) && inds.Contains(j))
+                        Col = hilightColor;
+                    else
+                        Col = arrowColor;
+
+                    if (g.Matrix[i, j] != 0 && i != j)
+                        DrawArrow(e, g.Positions[i], g.Positions[j], Col);
                 }
+
 
             }
         }
@@ -263,8 +313,6 @@ namespace Discr_graph
             Color Col = fillcolor;
             for (int i = 0; i < g.Count; i++)
             {
-
-
                 int j = 0;
                 if (!g.isOrGraph) j = i;
                 for (; j < g.Count; j++)
@@ -275,24 +323,55 @@ namespace Discr_graph
                         {
                             Position wPos = GetArrowEnd(g.Positions[j], g.Positions[i], size / 2 + 45);
                             DrawCircle(e, (int)(size * 0.37), (int)(wPos.X), (int)(wPos.Y), Color.White);
-                            DrawString(e, (float)wPos.X + offsetX, (float)wPos.Y + offsetY, g.Matrix[i, j].ToString(),hilightColor);
+                            DrawString(e, (float)wPos.X + offsetX, (float)wPos.Y + offsetY, g.Matrix[i, j].ToString(), hilightColor);
                         }
                     }
                 }
+            }
+        }
 
-
+        private static void DrawWeightsPathNOR(PaintEventArgs e, Graph g, List<int> inds)
+        {
+            for (int i = 1; i < inds.Count; i++)
+            {
+                if (inds[i] >= g.Count) new NoPathException("Пути нет");
+                if (g.Matrix[inds[i - 1], inds[i]] != 0 || g.Matrix[inds[i], inds[i - 1]] != 0)
+                {
+                    Position wPos = GetArrowEnd(g.Positions[inds[i]], g.Positions[inds[i - 1]], size / 2 + 45);
+                    DrawCircle(e, (int)(size * 0.37), (int)(wPos.X), (int)(wPos.Y), Color.White);
+                    DrawString(e, (float)wPos.X + offsetX, (float)wPos.Y + offsetY, g.Matrix[inds[i - 1], inds[i]].ToString(), hilightColor);
+                }
+                else
+                {
+                    throw new NoPathException("Пути нет");
+                }
+            }
+        }
+        private static void DrawWeightsPathOR(PaintEventArgs e, Graph g, List<int> inds)
+        {
+            for (int i = 1; i < inds.Count; i++)
+            {
+                if (inds[i] >= g.Count) new NoPathException("Пути нет");
+                if (g.Matrix[inds[i - 1], inds[i]] != 0)
+                {
+                    Position wPos = GetArrowEnd(g.Positions[inds[i]], g.Positions[inds[i - 1]], size / 2 + 45);
+                    DrawCircle(e, (int)(size * 0.37), (int)(wPos.X), (int)(wPos.Y), Color.White);
+                    DrawString(e, (float)wPos.X + offsetX, (float)wPos.Y + offsetY, g.Matrix[inds[i - 1], inds[i]].ToString(), hilightColor);
+                }
+                else
+                {
+                    throw new NoPathException("Пути нет");
+                }
             }
         }
         private static void DrawString(PaintEventArgs e, float x, float y, string msg, Color col)
         {
-            Font drawFont = new Font("Arial",weightsfontSize);
+            Font drawFont = new Font("Arial", weightsfontSize);
             System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(col);
             e.Graphics.DrawString(msg, drawFont, myBrush, x - (float)(msg.Length * (fontSize - 4) * 0.5), y - (float)(fontSize * 0.7));
             myBrush.Dispose();
         }
-
-
-        public static void DrawCircleStroke(PaintEventArgs e, int size, int x, int y, Color c)
+        private static void DrawCircleStroke(PaintEventArgs e, int size, int x, int y, Color c)
         {
             System.Drawing.Pen myBrush = new Pen(c, strokeWidth);
             // System.Drawing.Graphics formGraphics;
@@ -302,5 +381,23 @@ namespace Discr_graph
             //  formGraphics.Dispose();
         }
 
+    }
+    [Serializable]
+    class Position
+    {
+        public double X;
+        public double Y;
+        public Position(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
+    }
+    class NoPathException : Exception
+    {
+        public NoPathException(string msg) : base()
+        {
+        }
     }
 }
