@@ -187,13 +187,25 @@
             this.button8 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button9 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.matrix_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.count_numeric1)).BeginInit();
             this.saveLoad_panel.SuspendLayout();
+            this.deikstr_panel.SuspendLayout();
+            this.core_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -1633,7 +1645,7 @@
             this.saveLoad_panel.Controls.Add(this.textBox3);
             this.saveLoad_panel.Controls.Add(this.button4);
             this.saveLoad_panel.Controls.Add(this.listBox1);
-            this.saveLoad_panel.Location = new System.Drawing.Point(521, 49);
+            this.saveLoad_panel.Location = new System.Drawing.Point(1209, 455);
             this.saveLoad_panel.Name = "saveLoad_panel";
             this.saveLoad_panel.Size = new System.Drawing.Size(331, 393);
             this.saveLoad_panel.TabIndex = 123;
@@ -1730,17 +1742,23 @@
             // 
             // deikstr_panel
             // 
-            this.deikstr_panel.Location = new System.Drawing.Point(574, 450);
+            this.deikstr_panel.Controls.Add(this.groupBox2);
+            this.deikstr_panel.Controls.Add(this.listBox2);
+            this.deikstr_panel.Controls.Add(this.button10);
+            this.deikstr_panel.Controls.Add(this.label16);
+            this.deikstr_panel.Controls.Add(this.numericUpDown2);
+            this.deikstr_panel.Location = new System.Drawing.Point(909, 66);
             this.deikstr_panel.Name = "deikstr_panel";
-            this.deikstr_panel.Size = new System.Drawing.Size(200, 100);
+            this.deikstr_panel.Size = new System.Drawing.Size(294, 393);
             this.deikstr_panel.TabIndex = 124;
             this.deikstr_panel.Visible = false;
             // 
             // core_panel
             // 
-            this.core_panel.Location = new System.Drawing.Point(150, 548);
+            this.core_panel.Controls.Add(this.button9);
+            this.core_panel.Location = new System.Drawing.Point(581, 35);
             this.core_panel.Name = "core_panel";
-            this.core_panel.Size = new System.Drawing.Size(200, 100);
+            this.core_panel.Size = new System.Drawing.Size(274, 435);
             this.core_panel.TabIndex = 125;
             this.core_panel.Visible = false;
             // 
@@ -1826,6 +1844,100 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(130, 12);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(36, 20);
+            this.numericUpDown2.TabIndex = 0;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(12, 14);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(112, 13);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "Начальная вершина:";
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(181, 12);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 2;
+            this.button10.Text = "Старт";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(15, 49);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(131, 147);
+            this.listBox2.TabIndex = 3;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Checked = true;
+            this.radioButton5.Location = new System.Drawing.Point(6, 15);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(99, 17);
+            this.radioButton5.TabIndex = 5;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Показать пути";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            this.radioButton5.CheckedChanged += new System.EventHandler(this.radioButton5_CheckedChanged);
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Location = new System.Drawing.Point(6, 38);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(122, 17);
+            this.radioButton6.TabIndex = 6;
+            this.radioButton6.Text = "Показать все веса";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            this.radioButton6.CheckedChanged += new System.EventHandler(this.radioButton6_CheckedChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.radioButton6);
+            this.groupBox2.Controls.Add(this.radioButton5);
+            this.groupBox2.Location = new System.Drawing.Point(152, 129);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(137, 67);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(66, 105);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 0;
+            this.button9.Text = "button9";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1857,7 +1969,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.count_numeric1)).EndInit();
             this.saveLoad_panel.ResumeLayout(false);
             this.saveLoad_panel.PerformLayout();
+            this.deikstr_panel.ResumeLayout(false);
+            this.deikstr_panel.PerformLayout();
+            this.core_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2023,6 +2141,14 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton radioButton6;
+        private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.Button button9;
     }
 }
 

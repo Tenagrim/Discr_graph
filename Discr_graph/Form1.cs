@@ -18,6 +18,14 @@ namespace Discr_graph
         List<Graph> savedG = new List<Graph>();
         List<string> namesSaved = new List<string>();
         List<int> path = new List<int>();
+        List<List<int>> paThs1 = new List<List<int>>();
+        List<ValueTuple<int, int>> edges = new List<ValueTuple<int, int>>();
+
+        bool drawPath = false;
+        bool drawEdges = false;
+        bool drawWeights = false;
+        bool drawCores = false;
+
 
         public Form1()
         {
@@ -66,25 +74,22 @@ namespace Discr_graph
         private void button2_Click(object sender, EventArgs e)
         {
             path.Clear();
-            path.Add(1);
-            path.Add(4);
-            path.Add(0);
-            path.Add(3);
-            path.Add(2);
-            path.Add(5);
+            edges.Clear();
+            edges.Add(new ValueTuple<int, int>(1, 2));
+            edges.Add(new ValueTuple<int, int>(3, 2));
+            edges.Add(new ValueTuple<int, int>(1, 7));
+            edges.Add(new ValueTuple<int, int>(4, 2));
             Action1();
         }
         private void Update(object sender, PaintEventArgs e)
         {
-            // GD2.DrawCircle(e, 50, 0, 0, Color.Red);
-            // int n = 8;
-            //  if (textBox1.Text != "")
-            // n = Int32.Parse(textBox1.Text);
-        //    g = new Graph(10, true);
-
             if (g != null)
             {
-                if (path.Count != 0)
+                if (paThs1.Count!=0 && drawCores) 
+                {
+                    GD2.DrawGraph(e, g, paThs1);
+                }
+               else if (path.Count != 0 && drawPath)
                 {
                     try
                     {
@@ -97,9 +102,22 @@ namespace Discr_graph
                         Update(sender, e);
                     }
                 }
+                else if (edges.Count != 0 && drawEdges)
+                {
+                    try
+                    {
+                        GD2.DrawGraph(e, g, edges);
+                    }
+                    catch (NoPathException)
+                    {
+                        ShowError("Нет такого пути");
+                        path.Clear();
+                        Update(sender, e);
+                    }
+                }
                 else
                 {
-                    GD2.DrawGraph(e, g, checkBox2.Checked);
+                    GD2.DrawGraph(e, g, drawWeights);
                 }
             }
         }
@@ -113,10 +131,10 @@ namespace Discr_graph
                 if (!orgraph_ch1.Checked) j = i;
                 for (; j <= 10; j++)
                 {
-                    if (rand.Next(0, 11 - n) == 0 && i!=j)
+                    if (rand.Next(0, 11 - n) == 0 && i != j)
                     {
                         t = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];
-                        t.Text = rand.Next(1,99).ToString();
+                        t.Text = rand.Next(1, 99).ToString();
                     }
                 }
             }
@@ -290,6 +308,7 @@ namespace Discr_graph
         }
         private void AddSaved()
         {
+            if (g == null) { ShowError("Граф не создан. Сохранять нечего"); return; }
             string name;
             if (textBox5.Text == "") name = "Неназванный граф " + (savedG.Count + 1);
             else name = textBox5.Text;
@@ -301,6 +320,10 @@ namespace Discr_graph
         private void LoadSaved()
         {
             if (listBox1.SelectedIndex == -1) { ShowError("Не выбран граф для загрузки"); return; }
+
+            path.Clear();
+            edges.Clear();
+            paThs1.Clear();
 
             g = savedG[listBox1.SelectedIndex];
             Action1();
@@ -343,6 +366,7 @@ namespace Discr_graph
         private void MakeGraph()
         {
             path.Clear();
+            edges.Clear();
             g = new Graph(GetMatrix((int)count_numeric1.Value), orgraph_ch1.Checked);
             Action1();
         }
@@ -370,14 +394,39 @@ namespace Discr_graph
                 {
                     if (i > j)
                     {
-                        t1 = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];                      
+                        t1 = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];
                         t = (TextBox)panel1.Controls["textBox" + (j.ToString()) + (i.ToString())];
                         if ((t.Text == "0" || t.Text == "") && (t1.Text != "0" || t1.Text == ""))
                             t.Text = t1.Text;
                     }
                 }
             }
+        }
 
+        private void Deicstr()
+        {
+            path.Clear();
+
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+
+            List<List<int>> paths = new List<List<int>>();
+            List<int> pathsLengths = new List<int>();
+
+            Algorythms.Deicstr(g, (int)numericUpDown2.Value, paths, pathsLengths);
+
+            paThs1 = paths;
+            listBox2.Items.Clear();
+
+            for (int i = 0; i < pathsLengths.Count; i++)
+            { string str = "Путь " + (int)numericUpDown2.Value + "->" + (i + 1) + " = ";
+
+                if (pathsLengths[i] != 10000)
+                    str += pathsLengths[i].ToString();
+                else str += "NaN";
+                    listBox2.Items.Add(str);
+            }
+            drawPath = true;
+            Action1();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -407,6 +456,8 @@ namespace Discr_graph
         {
             if (orgraph_ch1.Checked) showORMatrix((int)count_numeric1.Value);
             else showNORMatrix((int)count_numeric1.Value);
+
+            numericUpDown2.Maximum = count_numeric1.Value;
         }
 
         private void mkGraph_button_Click(object sender, EventArgs e)
@@ -427,6 +478,11 @@ namespace Discr_graph
         private void deikstr_rb_CheckedChanged(object sender, EventArgs e)
         {
             showTask(3);
+            listBox2.Items.Clear();
+            paThs1.Clear();
+            path.Clear();
+            edges.Clear();
+            Action1();
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
@@ -489,7 +545,57 @@ namespace Discr_graph
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
+            drawWeights = checkBox2.Checked;
+            drawPath = false;
             Action1();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Deicstr();
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex != -1)
+            {
+                path = paThs1[listBox2.SelectedIndex];
+                Action1();
+            }
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            drawPath = radioButton5.Checked;
+            Action1();
+        }
+
+        private void radioButton6_CheckedChanged(object sender, EventArgs e)
+        {
+            drawWeights = radioButton6.Checked;
+            Action1();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            //paThs1.Clear();
+            //paThs1.Add(new List<int>());
+            //paThs1.Add(new List<int>());
+            //paThs1.Add(new List<int>());
+            //paThs1[0].Add(1);
+            //paThs1[0].Add(3);
+            //paThs1[0].Add(4);
+            //paThs1[1].Add(0);
+            //paThs1[1].Add(3);
+            //paThs1[2].Add(8);
+            //paThs1[2].Add(9);
+            //drawCores = true;
+            //Action1();
+            paThs1.Clear();
+            paThs1  = Algorythms.GetCore(g.Matrix);
+            drawCores = true;
+            Action1();
+            //int c = 1;
         }
     }
 }

@@ -10,21 +10,22 @@ namespace Discr_graph
 {
     class GD2
     {
-        public static int offsetX = 0;
-        public static int offsetY = 0;
-        public static double radiusOut = 300;
-        public static int size = 90;
-        public static int fontSize = 24;
-        public static int weightsfontSize = 22;
-        public static float strokeWidth = 4.5f;
-        public static Color fillcolor = Color.White;
-        public static Color hilightColor = Color.Red;
-        public static Color arrowColor = Color.Blue;
-        public static Color outlineColor = Color.Blue;
-        public static Color namesColor = Color.Blue;
-        public static Color weightsColor = Color.Blue;
+        public static int offsetX = 0;                  // Координата X центра грава на форме (координата Х picturebox-а)
+        public static int offsetY = 0;                  // Координата Y центра грава на форме (координата Х picturebox-а)
+        public static double radiusOut = 300;           // Радиус расположения вершин
+        public static int size = 90;                    // Размер вершин
+        public static int fontSize = 24;                // Размер шрифта вершин
+        public static int weightsfontSize = 22;         // Размер шрифта весов
+        public static float strokeWidth = 4.5f;         // Ширина обводки вершин и линий
+        public static Color fillcolor = Color.White;    // Цвет заливки вершин
+        public static Color hilightColor = Color.Red;   // Цвет выделения
+        public static Color arrowColor = Color.Blue;    // Цвет связей
+        public static Color outlineColor = Color.Blue;  // Цвет обводки вершин
+        public static Color namesColor = Color.Blue;    // Цвет названий вершин
+        public static Color weightsColor = Color.Blue;  // Цвет весов
+        public static Color[] coresColors = { Color.Magenta, Color.Cyan, Color.LightGreen, Color.Purple, Color.DarkOrange }; // Цвета для нескольких ядер
 
-        public static void DrawGraph(PaintEventArgs e, Graph g, bool weights)
+        public static void DrawGraph(PaintEventArgs e, Graph g, bool weights) // Нарисовать весь граф без выделения weights - рисовать веса или нет
         {
             if (g.Positions == null)
                 CalcPositions(g);
@@ -34,7 +35,8 @@ namespace Discr_graph
             if (weights)
                 DrawWeights(e, g);
         }
-        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds, bool path)
+
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds, bool path) // Нарисовать граф. Вершины из списка выделяются как подграф если path = false или как путь если path = true
         {
             if (g.Positions == null)
                 CalcPositions(g);
@@ -50,9 +52,32 @@ namespace Discr_graph
             }
             else
                 DrawWeights(e, g, inds);
+        }
+
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<List<int>> cores)
+        {
+            if (g.Positions == null)
+                CalcPositions(g);
+
+            DrawLines(e, g, cores);
+            DrawNodes(e, g, cores);
+            DrawNames(e, g, cores);
 
         }
 
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges) // Нарисовать граф и выделить указанные ребра
+        {
+            if (g.Positions == null)
+                CalcPositions(g);
+            DrawLines(e, g, edges);
+            DrawNodes(e, g, edges);
+            DrawNames(e, g, edges);
+        }
+        private static Color Getcolor(int ind)
+        {
+            if (ind >= coresColors.Length) ind %= coresColors.Length;
+            return coresColors[ind];
+        }
         private static void DrawCircle(PaintEventArgs e, int size, int x, int y, Color c)
         {
             System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(c);
@@ -96,7 +121,6 @@ namespace Discr_graph
             return new Position(dirX + a.X, dirY + a.Y);
         }
 
-
         public static void Clear(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Transparent);
@@ -136,6 +160,48 @@ namespace Discr_graph
                 DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
             }
         }
+        private static void DrawNodes(PaintEventArgs e, Graph g, List<int> inds, Color Col)
+        {
+
+            for (int i = 0; i < g.Count; i++)
+            {
+                if (inds.Contains(i))
+                {
+                    DrawCircle(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
+                    DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
+                }
+            }
+        }
+        private static void DrawNodes(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
+        {
+            Color Col = fillcolor;
+            for (int i = 0; i < g.Count; i++)
+            {
+                foreach (var inds in edges)
+                {
+                    if (inds.Item1 == i || inds.Item2 == i)
+                    {
+                        Col = hilightColor;
+                        break;
+                    }
+                    else
+                        Col = outlineColor;
+                }
+                DrawCircle(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
+                DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
+            }
+        }
+        private static void DrawNodes(PaintEventArgs e, Graph g, List<List<int>> cores)
+        {
+            DrawNodes(e, g);
+            Color Col = Color.Red;
+            for (int i = 0; i < cores.Count; i++)
+            {
+                Col = Getcolor(i);
+                DrawNodes(e, g, cores[i], Col);
+               // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
+            }
+        }
 
         private static void DrawNames(PaintEventArgs e, Graph g)
         {
@@ -163,6 +229,53 @@ namespace Discr_graph
                 e.Graphics.DrawString(g.names[i], drawFont, myBrush, (float)(g.Positions[i].X + offsetX - (g.names[i].Length * fontSize * 0.6)), (float)(g.Positions[i].Y + offsetY - (fontSize * 0.62)));
             }
         }
+        private static void DrawNames(PaintEventArgs e, Graph g, List<int> inds, Color Col)
+        {
+            Font drawFont = new Font("Arial", fontSize);
+            System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(namesColor);
+            for (int i = 0; i < g.Count; i++)
+            {
+                if (inds.Contains(i))
+                {
+                    myBrush.Color = Col;
+                    e.Graphics.DrawString(g.names[i], drawFont, myBrush, (float)(g.Positions[i].X + offsetX - (g.names[i].Length * fontSize * 0.6)), (float)(g.Positions[i].Y + offsetY - (fontSize * 0.62)));
+                }
+            }
+        }
+        private static void DrawNames(PaintEventArgs e, Graph g, List<List<int>> cores)
+        {
+            Color Col = Color.Red;
+
+            DrawNames(e, g);
+
+            for (int i = 0; i < cores.Count; i++)
+            {
+                Col = Getcolor(i);
+                DrawNames(e, g, cores[i], Col);
+            }
+           // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
+        }
+        private static void DrawNames(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
+        {
+            Color Col = fillcolor;
+            Font drawFont = new Font("Arial", fontSize);
+            System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(namesColor);
+            for (int i = 0; i < g.Count; i++)
+            {
+                foreach (var inds in edges)
+                {
+                    if (inds.Item1 == i || inds.Item2 == i)
+                    {
+                        Col = hilightColor;
+                        break;
+                    }
+                    else
+                        Col = namesColor;
+                }
+                myBrush.Color = Col;
+                e.Graphics.DrawString(g.names[i], drawFont, myBrush, (float)(g.Positions[i].X + offsetX - (g.names[i].Length * fontSize * 0.6)), (float)(g.Positions[i].Y + offsetY - (fontSize * 0.62)));
+            }
+        }
         private static void DrawLines(PaintEventArgs e, Graph g)
         {
             if (!g.isOrGraph)
@@ -182,7 +295,8 @@ namespace Discr_graph
                 {
                     DrawLinesNOR(e, g);
                     DrawLinesNORPath(e, g, inds);
-                }else
+                }
+                else
                     DrawLinesNOR(e, g, inds);
             }
             else
@@ -194,6 +308,24 @@ namespace Discr_graph
                 }
                 else
                     DrawLinesOR(e, g, inds);
+            }
+        }
+        private static void DrawLines(PaintEventArgs e, Graph g, List<List<int>> cores)
+        {
+            DrawLinesOR(e, g);
+            DrawLinesOR(e, g, cores);
+        }
+        private static void DrawLines(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
+        {
+            if (!g.isOrGraph)
+            {
+                DrawLinesNOR(e, g);
+                DrawLinesNOR(e, g, edges);
+            }
+            else
+            {
+                DrawLinesOR(e, g);
+                DrawLinesOR(e, g, edges);
             }
         }
 
@@ -217,13 +349,29 @@ namespace Discr_graph
                 for (int j = i + 1; j < g.Count; j++)
                 {
 
-                        if (inds.Contains(i) && inds.Contains(j))
-                            Col = hilightColor;
-                        else
-                            Col = outlineColor;
+                    if (inds.Contains(i) && inds.Contains(j))
+                        Col = hilightColor;
+                    else
+                        Col = outlineColor;
 
                     if (g.Matrix[i, j] != 0)
                         DrawLine(e, g.Positions[i], g.Positions[j], Col);
+                }
+            }
+        }
+
+        private static void DrawLinesNOR(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
+        {
+            for (int i = 1; i < edges.Count; i++)
+            {
+                if (edges[i].Item1 >= g.Count || edges[i].Item2 >= g.Count) new NoPathException("Пути нет");
+                if (g.Matrix[edges[i].Item1, edges[i].Item2] != 0 || g.Matrix[edges[i].Item2, edges[i].Item1] != 0)
+                {
+                    DrawLine(e, g.Positions[edges[i].Item1], g.Positions[edges[i].Item2], hilightColor);
+                }
+                else
+                {
+                    throw new NoPathException("Пути нет");
                 }
             }
         }
@@ -238,7 +386,7 @@ namespace Discr_graph
                 }
                 else
                 {
-                   throw new NoPathException("Пути нет");
+                    throw new NoPathException("Пути нет");
                 }
             }
         }
@@ -254,6 +402,21 @@ namespace Discr_graph
                 else
                 {
                     throw new NoPathException("Пути нет");
+                }
+            }
+        }
+        private static void DrawLinesOR(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
+        {
+            foreach (var edge in edges)
+            {
+                if (edge.Item1 >= g.Count || edge.Item2 >= g.Count) throw new NoPathException("Ребра нет");
+                if (g.Matrix[edge.Item1, edge.Item2] != 0)
+                {
+                    DrawArrow(e, g.Positions[edge.Item1], g.Positions[edge.Item2], hilightColor);
+                }
+                else
+                {
+                    throw new NoPathException("Ребра нет");
                 }
             }
         }
@@ -286,8 +449,32 @@ namespace Discr_graph
                     if (g.Matrix[i, j] != 0 && i != j)
                         DrawArrow(e, g.Positions[i], g.Positions[j], Col);
                 }
+            }
+        }
+        private static void DrawLinesOR(PaintEventArgs e, Graph g, List<int> inds, Color Col)
+        {
+            for (int i = 0; i < g.Count; i++)
+            {
 
+                for (int j = 0; j < g.Count; j++)
+                {
+                    if (inds.Contains(i) && inds.Contains(j))
+                    {
 
+                        if (g.Matrix[i, j] != 0 && i != j)
+                            DrawArrow(e, g.Positions[i], g.Positions[j], Col);
+                    }
+                }
+            }
+        }
+        private static void DrawLinesOR(PaintEventArgs e, Graph g, List<List<int>> cores)
+        {
+            Color Col = Color.FromArgb(255, 0, 0);
+            for (int n = 0; n < cores.Count; n++)
+            {
+                Col = Getcolor(n);
+                DrawLinesOR(e, g, cores[n], Col);
+               // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
             }
         }
 
