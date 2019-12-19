@@ -190,11 +190,24 @@ namespace Discr_graph
                             temp = arr2[i + 1][h];
                         else
                             temp = arr2[i][k] + arr2[i + 1][h];
-                        list.Add(SortString(temp));
+
+                        bool f = false;
+                        for (int s = 0; s < list.Count; s++)
+                        {
+
+                            f = ContainsPogl(SortString(temp),list[s] );
+                            if (f) break;
+                                     
+                        }
+                        if (!f)
+                            list.Add(SortString(temp));
                     }
                 }
                 arr2[i + 1] = list.ToArray();
             }
+
+           //
+
             for (int i = 0; i < arr2[arr2.Length - 1].Length; i++)
             { // заменяем то, что можно поглотить, на ""
                 for (int j = 0; j < arr2[arr2.Length - 1].Length; j++)
@@ -205,6 +218,8 @@ namespace Discr_graph
                     }
                 }
             }
+
+
             List<string> rez = new List<string>();
             for (int i = 0; i < arr2[arr2.Length - 1].Length; i++)
                 if (arr2[arr2.Length - 1][i] != "")

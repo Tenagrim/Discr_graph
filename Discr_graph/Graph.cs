@@ -67,6 +67,10 @@ namespace Discr_graph
             isOrGraph = false;
             positions = null;
         }
+        public void TruncPos()
+        {
+            positions = null;
+        }
         public Graph(int[,] m, bool isOrGR)
         {
             if (m.GetLength(0) != m.GetLength(1)) throw new ArgumentException("Инвалидная матрица");

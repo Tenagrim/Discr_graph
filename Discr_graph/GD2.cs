@@ -10,6 +10,7 @@ namespace Discr_graph
 {
     class GD2
     {
+        public static int startAngle = 0;
         public static int offsetX = 0;                  // Координата X центра грава на форме (координата Х picturebox-а)
         public static int offsetY = 0;                  // Координата Y центра грава на форме (координата Х picturebox-а)
         public static double radiusOut = 300;           // Радиус расположения вершин
@@ -23,7 +24,12 @@ namespace Discr_graph
         public static Color outlineColor = Color.Blue;  // Цвет обводки вершин
         public static Color namesColor = Color.Blue;    // Цвет названий вершин
         public static Color weightsColor = Color.Blue;  // Цвет весов
-        public static Color[] coresColors = { Color.Magenta, Color.Cyan, Color.LightGreen, Color.Purple, Color.DarkOrange }; // Цвета для нескольких ядер
+        public static Color[] coresColors = { Color.Magenta, Color.Cyan, Color.LightGreen, Color.Purple, Color.DarkOrange, Color.Chocolate, Color.Brown,Color.Crimson, Color.Firebrick, Color.Maroon }; // Цвета для нескольких ядер
+
+        public static void SetStartAngle(int n)
+        {
+            startAngle = n;
+        }
 
         public static void DrawGraph(PaintEventArgs e, Graph g, bool weights) // Нарисовать весь граф без выделения weights - рисовать веса или нет
         {
@@ -131,9 +137,9 @@ namespace Discr_graph
             int k = 0;
             for (double i = 0; i < 360; i += (double)(360 / (double)g.Count))
             {
-                double heading = i * 3.1415926535897932384626433832795 / 180;
+                double heading = ((i+startAngle) * 3.1415926535897932384626433832795 / 180);
                 if (k < g.Count)
-                    Npositions[k] = new Position(Math.Cos(heading) * radiusOut, Math.Sin(heading) * radiusOut);
+                    Npositions[k] = new Position(Math.Cos(heading ) * radiusOut, Math.Sin(heading ) * radiusOut);
                 k++;
             }
             g.Positions = Npositions;
@@ -167,8 +173,8 @@ namespace Discr_graph
             {
                 if (inds.Contains(i))
                 {
-                    DrawCircle(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
-                    DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
+                    DrawCircle(e, size , (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
+                    DrawCircleStroke(e, size , (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
                 }
             }
         }

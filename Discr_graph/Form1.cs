@@ -19,6 +19,7 @@ namespace Discr_graph
         List<string> namesSaved = new List<string>();
         List<int> path = new List<int>();
         List<List<int>> paThs1 = new List<List<int>>();
+        List<List<int>> cores = new List<List<int>>();
         List<ValueTuple<int, int>> edges = new List<ValueTuple<int, int>>();
 
         bool drawPath = false;
@@ -85,9 +86,9 @@ namespace Discr_graph
         {
             if (g != null)
             {
-                if (paThs1.Count!=0 && drawCores) 
+                if (cores.Count!=0 && drawCores) 
                 {
-                    GD2.DrawGraph(e, g, paThs1);
+                    GD2.DrawGraph(e, g, cores);
                 }
                else if (path.Count != 0 && drawPath)
                 {
@@ -121,6 +122,18 @@ namespace Discr_graph
                 }
             }
         }
+        private void ClearDrawArgs()
+        {
+            drawCores = false;
+            drawPath = false;
+            drawEdges = false;
+            path.Clear();
+            paThs1.Clear();
+            cores.Clear();
+            edges.Clear();
+
+        }
+
         private void RandomLines(int n)
         {
             Random rand = new Random();
@@ -429,6 +442,31 @@ namespace Discr_graph
             Action1();
         }
 
+        private void Cores()
+        {
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+            if (g.isOrGraph == false) { ShowError("Нужен орграф"); return; }
+            cores.Clear();
+            cores = Algorythms.GetCore(g.Matrix);
+            drawCores = true;
+            ShowCoresInfo();
+            Action1();
+        }
+        private void ShowCoresInfo()
+        {
+            richTextBox1.Text = "";
+            richTextBox1.Text += "Количество ядер: " + cores.Count + "\n";
+            for (int i = 0; i < cores.Count; i++)
+            {
+                richTextBox1.Text +=(i+1) + ": ";
+                for (int j = 0; j < cores[i].Count; j++)
+                {
+                    richTextBox1.Text += (cores[i][j]+1).ToString() + " ";
+                }
+                richTextBox1.Text += "\n";
+                }
+        }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Update(sender, e);
@@ -488,6 +526,10 @@ namespace Discr_graph
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             showTask(4);
+            richTextBox1.Text = "";
+            cores.Clear();
+            drawCores = false;
+            Action1();
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
@@ -508,6 +550,7 @@ namespace Discr_graph
         private void button4_Click(object sender, EventArgs e)
         {
             AddSaved();
+            SaveList();
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -578,24 +621,17 @@ namespace Discr_graph
 
         private void button9_Click(object sender, EventArgs e)
         {
-            //paThs1.Clear();
-            //paThs1.Add(new List<int>());
-            //paThs1.Add(new List<int>());
-            //paThs1.Add(new List<int>());
-            //paThs1[0].Add(1);
-            //paThs1[0].Add(3);
-            //paThs1[0].Add(4);
-            //paThs1[1].Add(0);
-            //paThs1[1].Add(3);
-            //paThs1[2].Add(8);
-            //paThs1[2].Add(9);
-            //drawCores = true;
-            //Action1();
-            paThs1.Clear();
-            paThs1  = Algorythms.GetCore(g.Matrix);
-            drawCores = true;
-            Action1();
-            //int c = 1;
+            Cores();
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (g != null)
+            {
+                g.TruncPos();
+                GD2.startAngle = (int)numericUpDown3.Value % 360;
+                Action1();
+            }
         }
     }
 }
