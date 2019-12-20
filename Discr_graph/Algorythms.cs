@@ -266,6 +266,222 @@ namespace Discr_graph
             }
             return res;
         }
+        static public bool AllVertexConected(int[,] graph)
+        {
+            bool f = false;
+            for (int i = 0; i < graph.GetLength(0); i++)
+            {
+                f = false;
+                for (int j = 0; j < graph.GetLength(0); j++)
+                    if (graph[i, j] != 0)
+                    {
+                        f = true;
+                        break;
+                    }
+                for (int j = 0; j < graph.GetLength(0); j++)
+                    if (graph[j, i] != 0)
+                    {
+                        f = true;
+                        break;
+                    }
+            }
+            return f;
+        } // все ли вершины связаны
+        private struct Edge
+        {
+            public int v1, v2, w; // v1- вершина 1, v2 - вершина 2, w - ширина
+            public Edge(int v1, int v2, int w)
+            {
+                this.v1 = v1;
+                this.v2 = v2;
+                this.w = w;
+            } // конструктор
+        } // ребро
+        static private List<Edge> GetListEdges(int[,] graph)
+        {
+            List<Edge> myEdges = new List<Edge>(); // список рёбер
+            for (int i = 0; i < graph.GetLength(0); i++)
+                for (int j = i + 1; j < graph.GetLength(0); j++)
+                    if (graph[i, j] != 0) myEdges.Add(new Edge(i, j, graph[i, j]));
+            for (int i = 0; i < myEdges.Count; i++)
+                for (int j = 0; j < myEdges.Count; j++)
+                    if (myEdges[i].w < myEdges[j].w)
+                    {
+                        Edge t = myEdges[i];
+                        myEdges[i] = myEdges[j];
+                        myEdges[j] = t;
+                    }
+            return myEdges;
+        } // получение списка рёбер из таблицы весов и сортировка по возрастанию
+        static private bool IsItTree(int[,] graph)
+        {
+            List<int> visitedVertex = new List<int>();
+            visitedVertex.Add(0); // добавили первую вершину
+            bool cicl = false;
+            for (int i = 0; i < visitedVertex.Count; i++)
+            { // смотрим посещённые вершины (ищем куда дальше можем пойти)
+                for (int j = visitedVertex[i] + 1; j < graph.GetLength(0); j++)
+                {
+                    if (graph[visitedVertex[i], j] != 0)
+                    {
+                        if (!visitedVertex.Contains(j))
+                        {
+                            visitedVertex.Add(j);
+                        }
+                        else
+                        {
+                            cicl = true; // найден цикл
+                            break; // завершаем посещение вершин
+                        }
+                    }
+                }
+                if (cicl) break; // если найдет цикл то завершаем посещение вершин
+            }
+            if (cicl) return false; // если найден цикл, то результат функции отрицательный
+            else
+            {
+                if (visitedVertex.Count == graph.GetLength(0)) return true; // если смогли посетить все вершины, то граф является деревом
+                else return false; // иначе не дерево
+            }
+        }
+        static private bool Can_we_make_Graph(List<Edge> edges, int count)
+        {
+            bool[] visitedVertex = new bool[count];
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if (!visitedVertex[edges[i].v1] || !visitedVertex[edges[i].v2])
+                {
+                    visitedVertex[edges[i].v1] = true;
+                    visitedVertex[edges[i].v2] = true;
+                }
+                else
+                {
+                    List<int> a_vertex = new List<int>();
+                    List<int> b_vertex = new List<int>();
+                    for (int j = 0; j < edges.Count; j++)
+                    {
+                        if (j != i)
+                        {
+                            if (edges[j].v1 == edges[i].v1)
+                            {
+                                a_vertex.Add(edges[j].v2);
+                            }
+                            if (edges[j].v2 == edges[i].v1)
+                            {
+                                a_vertex.Add(edges[j].v1);
+                            }
+                            if (edges[j].v1 == edges[i].v2)
+                            {
+                                b_vertex.Add(edges[j].v2);
+                            }
+                            if (edges[j].v2 == edges[i].v2)
+                            {
+                                b_vertex.Add(edges[j].v1);
+                            }
+                        }
+                    }
+                    for (int j = 0; j < a_vertex.Count; j++)
+                    {
+                        for (int k = 0; k < b_vertex.Count; k++)
+                        {
+                            if (a_vertex[j] == b_vertex[k])
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        static private List<int> GetVertex(int[,] graph)
+        {
+            List<int> myVertex = new List<int>();
+            for (int i = 0; i < graph.GetLength(0); i++)
+                myVertex.Add(i);
+            return myVertex;
+        } // получение списка вершин
+        static private int[,] GetGraphFromEdges(List<Edge> listEdges)
+        {
+            List<int> vertex = new List<int>();
+            for (int i = 0; i < listEdges.Count; i++)
+            {
+                if (vertex.IndexOf(listEdges[i].v1) == -1)
+                    vertex.Add(listEdges[i].v1);
+                if (vertex.IndexOf(listEdges[i].v2) == -1)
+                    vertex.Add(listEdges[i].v2);
+            }
+            int[,] graph = new int[vertex.Count, vertex.Count];
+            for (int i = 0; i < listEdges.Count; i++)
+            {
+                graph[listEdges[i].v1, listEdges[i].v2] = listEdges[i].w;
+                graph[listEdges[i].v2, listEdges[i].v1] = graph[listEdges[i].v1, listEdges[i].v2];
+            }
+            return graph;
+        } // строит граф из рёбер
+        static public int WeightOstov(int[,] graph)
+        {
+            int sum = 0;
+            for (int i = 0; i < graph.GetLength(0); i++)
+                for (int j = 0; j < graph.GetLength(0); j++)
+                    sum += graph[i, j];
+            return sum / 2;
+        } // получение веса остова
+        static private int NecessaryEdge(List<Edge> notUsedEdges, List<int> usedVertex)
+        {
+            int index = -1;
+            for (int i = 0; i < notUsedEdges.Count; i++)
+            {
+                if (usedVertex.IndexOf(notUsedEdges[i].v1) == -1 || usedVertex.IndexOf(notUsedEdges[i].v2) == -1)
+                {
+                    return i;
+                }
+            }
+            return index;
+        } // поиск необходимого ребра
+        static public List<ValueTuple<int, int>> GetKruskal(int[,] graph)
+        {
+            List<Edge> rez = new List<Edge>();
+            List<Edge> notUsedEdges = GetListEdges(graph); // неиспользованные рёбра
+            List<int> notUsedVertex = GetVertex(graph); // неиспользованные вершины
+            List<int> usedVertex = new List<int>();
+            rez.Add(notUsedEdges[0]); // добавили первое ребро
+            notUsedVertex.Remove(notUsedEdges[0].v1);
+            notUsedVertex.Remove(notUsedEdges[0].v2);
+            usedVertex.Add(notUsedEdges[0].v1);
+            usedVertex.Add(notUsedEdges[0].v2);
+            notUsedEdges.RemoveAt(0);
+            while (notUsedVertex.Count > 0)
+            { // пока не используются все вершины
+                int index = NecessaryEdge(notUsedEdges, usedVertex);
+                if (index == -1) throw new Exception("Ошибка построения Остова");
+                rez.Add(notUsedEdges[index]); // добавили неиспользованное ребро
+                notUsedVertex.Remove(notUsedEdges[index].v1);
+                notUsedVertex.Remove(notUsedEdges[index].v2);
+                usedVertex.Add(notUsedEdges[index].v1);
+                usedVertex.Add(notUsedEdges[index].v2);
+                notUsedEdges.RemoveAt(index); // удалили из списка это же ребро
+            }
+            for (int i = 0; i < notUsedEdges.Count && !IsItTree(GetGraphFromEdges(rez)); i++)
+            { // пока не будет деревом, необходимо ещё добавлять вершины, даже если все вершины использованы
+                rez.Add(notUsedEdges[i]); // добавили наименьшее ребро
+                if (Can_we_make_Graph(rez, graph.GetLength(0)) && AllVertexConected(GetGraphFromEdges(rez)))
+                {
+                    return GetEdges(rez);
+                }
+               // else rez.RemoveAt(rez.Count - 1); // удалили только что добавленное ребро
+            }
+            return GetEdges(rez);
+        } // алгоритм Краскала
+        static List<ValueTuple<int, int>> GetEdges(List<Edge> ed)
+        {
+            List<ValueTuple<int, int>> res = new List<(int, int)>();
 
+            foreach (Edge i in ed)
+            {
+                res.Add(new ValueTuple<int, int>(i.v1, i.v2));
+            }
+            return res;
+        }
     }
 }

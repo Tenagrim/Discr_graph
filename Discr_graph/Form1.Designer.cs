@@ -161,6 +161,8 @@
             this.label210 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.matrix_panel = new System.Windows.Forms.Panel();
+            this.label17 = new System.Windows.Forms.Label();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button8 = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -193,15 +195,17 @@
             this.label16 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.core_panel = new System.Windows.Forms.Panel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.crascal_panel = new System.Windows.Forms.Panel();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label17 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button11 = new System.Windows.Forms.Button();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.matrix_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.count_numeric1)).BeginInit();
             this.saveLoad_panel.SuspendLayout();
@@ -209,7 +213,7 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.core_panel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            this.crascal_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -220,6 +224,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -230,6 +235,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // pictureBox1
@@ -248,6 +254,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 4;
+            this.textBox1.Visible = false;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // groupBox1
@@ -1566,6 +1573,28 @@
             this.matrix_panel.Size = new System.Drawing.Size(516, 384);
             this.matrix_panel.TabIndex = 121;
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(137, 360);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(104, 13);
+            this.label17.TabIndex = 132;
+            this.label17.Text = "Повернуть на угол:";
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(255, 358);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(42, 20);
+            this.numericUpDown3.TabIndex = 131;
+            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
@@ -1700,6 +1729,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 122;
+            this.textBox2.Visible = false;
             // 
             // saveLoad_panel
             // 
@@ -1714,7 +1744,7 @@
             this.saveLoad_panel.Controls.Add(this.textBox3);
             this.saveLoad_panel.Controls.Add(this.button4);
             this.saveLoad_panel.Controls.Add(this.listBox1);
-            this.saveLoad_panel.Location = new System.Drawing.Point(872, 346);
+            this.saveLoad_panel.Location = new System.Drawing.Point(935, 691);
             this.saveLoad_panel.Name = "saveLoad_panel";
             this.saveLoad_panel.Size = new System.Drawing.Size(331, 393);
             this.saveLoad_panel.TabIndex = 123;
@@ -1827,7 +1857,7 @@
             this.deikstr_panel.Controls.Add(this.button10);
             this.deikstr_panel.Controls.Add(this.label16);
             this.deikstr_panel.Controls.Add(this.numericUpDown2);
-            this.deikstr_panel.Location = new System.Drawing.Point(909, 66);
+            this.deikstr_panel.Location = new System.Drawing.Point(1178, 12);
             this.deikstr_panel.Name = "deikstr_panel";
             this.deikstr_panel.Size = new System.Drawing.Size(294, 393);
             this.deikstr_panel.TabIndex = 124;
@@ -1921,11 +1951,20 @@
             // 
             this.core_panel.Controls.Add(this.richTextBox1);
             this.core_panel.Controls.Add(this.button9);
-            this.core_panel.Location = new System.Drawing.Point(581, 35);
+            this.core_panel.Location = new System.Drawing.Point(1070, 411);
             this.core_panel.Name = "core_panel";
             this.core_panel.Size = new System.Drawing.Size(274, 435);
             this.core_panel.TabIndex = 125;
             this.core_panel.Visible = false;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(14, 48);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(137, 167);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = "";
             // 
             // button9
             // 
@@ -1939,41 +1978,44 @@
             // 
             // crascal_panel
             // 
-            this.crascal_panel.Location = new System.Drawing.Point(425, 598);
+            this.crascal_panel.Controls.Add(this.richTextBox2);
+            this.crascal_panel.Controls.Add(this.checkBox3);
+            this.crascal_panel.Controls.Add(this.button11);
+            this.crascal_panel.Location = new System.Drawing.Point(659, 61);
             this.crascal_panel.Name = "crascal_panel";
-            this.crascal_panel.Size = new System.Drawing.Size(200, 100);
+            this.crascal_panel.Size = new System.Drawing.Size(331, 414);
             this.crascal_panel.TabIndex = 126;
             this.crascal_panel.Visible = false;
             // 
-            // numericUpDown3
+            // button11
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(255, 358);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(42, 20);
-            this.numericUpDown3.TabIndex = 131;
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            this.button11.Location = new System.Drawing.Point(13, 16);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(143, 23);
+            this.button11.TabIndex = 0;
+            this.button11.Text = "Построить остов";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
-            // label17
+            // checkBox3
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(137, 360);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(104, 13);
-            this.label17.TabIndex = 132;
-            this.label17.Text = "Повернуть на угол:";
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(162, 207);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(102, 17);
+            this.checkBox3.TabIndex = 131;
+            this.checkBox3.Text = "Показать веса";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
-            // richTextBox1
+            // richTextBox2
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(14, 48);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(137, 167);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.richTextBox2.Location = new System.Drawing.Point(13, 45);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
+            this.richTextBox2.Size = new System.Drawing.Size(143, 182);
+            this.richTextBox2.TabIndex = 132;
+            this.richTextBox2.Text = "";
             // 
             // Form1
             // 
@@ -2003,6 +2045,7 @@
             this.panel1.PerformLayout();
             this.matrix_panel.ResumeLayout(false);
             this.matrix_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.count_numeric1)).EndInit();
             this.saveLoad_panel.ResumeLayout(false);
@@ -2013,7 +2056,8 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.core_panel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            this.crascal_panel.ResumeLayout(false);
+            this.crascal_panel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2190,6 +2234,9 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.RichTextBox richTextBox2;
     }
 }
 

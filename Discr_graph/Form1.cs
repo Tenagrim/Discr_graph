@@ -107,7 +107,7 @@ namespace Discr_graph
                 {
                     try
                     {
-                        GD2.DrawGraph(e, g, edges);
+                        GD2.DrawGraph(e, g, edges, drawWeights);
                     }
                     catch (NoPathException)
                     {
@@ -293,7 +293,7 @@ namespace Discr_graph
                 for (int j = 1; j <= 10; j++)
                 {
                     t = (TextBox)panel1.Controls["textBox" + (i.ToString()) + (j.ToString())];
-                    t.Text = "0";
+                    t.Text = "";
                 }
             }
         }
@@ -466,6 +466,33 @@ namespace Discr_graph
                 richTextBox1.Text += "\n";
                 }
         }
+        private void Crascal()
+        {
+            edges.Clear();
+
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+            try
+            {
+                edges = Algorythms.GetKruskal(g.Matrix);
+                ShowCrascalInfo();
+                drawEdges = true;
+                Action1();
+            }
+            catch (Exception)
+            {
+                ShowError("Невозможно построить остов. Не все вершины соединены");
+            }
+        }
+        private void ShowCrascalInfo()
+        {
+            richTextBox2.Text = "";
+
+            richTextBox2.Text += "Количество ребер в остове: " + edges.Count+ "\n";
+            foreach (ValueTuple<int, int> i in edges)
+            {
+                richTextBox2.Text += (i.Item1+1) + " - " + (i.Item2+1) + "\n";
+            }
+        }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -535,6 +562,11 @@ namespace Discr_graph
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             showTask(5);
+            richTextBox2.Text = "";
+            checkBox1.Checked = drawWeights;
+            checkBox2.Checked = drawWeights;
+            ClearDrawArgs();
+            Action1();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -633,5 +665,32 @@ namespace Discr_graph
                 Action1();
             }
         }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Crascal();
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            drawWeights = checkBox3.Checked;
+            Action1();
+        }
+
+
+
+
+
+
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
     }
+
+ 
 }

@@ -14,7 +14,7 @@ namespace Discr_graph
         public static int offsetX = 0;                  // Координата X центра грава на форме (координата Х picturebox-а)
         public static int offsetY = 0;                  // Координата Y центра грава на форме (координата Х picturebox-а)
         public static double radiusOut = 300;           // Радиус расположения вершин
-        public static int size = 90;                    // Размер вершин
+        public static int size = 90;               //90     // Размер вершин
         public static int fontSize = 24;                // Размер шрифта вершин
         public static int weightsfontSize = 22;         // Размер шрифта весов
         public static float strokeWidth = 4.5f;         // Ширина обводки вершин и линий
@@ -71,13 +71,15 @@ namespace Discr_graph
 
         }
 
-        public static void DrawGraph(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges) // Нарисовать граф и выделить указанные ребра
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges, bool weights) // Нарисовать граф и выделить указанные ребра
         {
             if (g.Positions == null)
                 CalcPositions(g);
             DrawLines(e, g, edges);
             DrawNodes(e, g, edges);
             DrawNames(e, g, edges);
+            if (weights)
+                DrawWeights(e, g);
         }
         private static Color Getcolor(int ind)
         {
@@ -368,7 +370,7 @@ namespace Discr_graph
 
         private static void DrawLinesNOR(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
         {
-            for (int i = 1; i < edges.Count; i++)
+            for (int i = 0; i < edges.Count; i++)
             {
                 if (edges[i].Item1 >= g.Count || edges[i].Item2 >= g.Count) new NoPathException("Пути нет");
                 if (g.Matrix[edges[i].Item1, edges[i].Item2] != 0 || g.Matrix[edges[i].Item2, edges[i].Item1] != 0)
