@@ -84,6 +84,8 @@ namespace Discr_graph
         }
         private void Update(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             if (g != null)
             {
                 if (cores.Count!=0 && drawCores) 

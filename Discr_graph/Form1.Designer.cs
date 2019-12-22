@@ -198,9 +198,9 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.crascal_panel = new System.Windows.Forms.Panel();
-            this.button11 = new System.Windows.Forms.Button();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.button11 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -1744,7 +1744,7 @@
             this.saveLoad_panel.Controls.Add(this.textBox3);
             this.saveLoad_panel.Controls.Add(this.button4);
             this.saveLoad_panel.Controls.Add(this.listBox1);
-            this.saveLoad_panel.Location = new System.Drawing.Point(935, 691);
+            this.saveLoad_panel.Location = new System.Drawing.Point(377, 589);
             this.saveLoad_panel.Name = "saveLoad_panel";
             this.saveLoad_panel.Size = new System.Drawing.Size(331, 393);
             this.saveLoad_panel.TabIndex = 123;
@@ -1857,7 +1857,7 @@
             this.deikstr_panel.Controls.Add(this.button10);
             this.deikstr_panel.Controls.Add(this.label16);
             this.deikstr_panel.Controls.Add(this.numericUpDown2);
-            this.deikstr_panel.Location = new System.Drawing.Point(1178, 12);
+            this.deikstr_panel.Location = new System.Drawing.Point(1200, 216);
             this.deikstr_panel.Name = "deikstr_panel";
             this.deikstr_panel.Size = new System.Drawing.Size(294, 393);
             this.deikstr_panel.TabIndex = 124;
@@ -1951,7 +1951,7 @@
             // 
             this.core_panel.Controls.Add(this.richTextBox1);
             this.core_panel.Controls.Add(this.button9);
-            this.core_panel.Location = new System.Drawing.Point(1070, 411);
+            this.core_panel.Location = new System.Drawing.Point(725, 659);
             this.core_panel.Name = "core_panel";
             this.core_panel.Size = new System.Drawing.Size(274, 435);
             this.core_panel.TabIndex = 125;
@@ -1981,21 +1981,20 @@
             this.crascal_panel.Controls.Add(this.richTextBox2);
             this.crascal_panel.Controls.Add(this.checkBox3);
             this.crascal_panel.Controls.Add(this.button11);
-            this.crascal_panel.Location = new System.Drawing.Point(659, 61);
+            this.crascal_panel.Location = new System.Drawing.Point(1084, 626);
             this.crascal_panel.Name = "crascal_panel";
             this.crascal_panel.Size = new System.Drawing.Size(331, 414);
             this.crascal_panel.TabIndex = 126;
             this.crascal_panel.Visible = false;
             // 
-            // button11
+            // richTextBox2
             // 
-            this.button11.Location = new System.Drawing.Point(13, 16);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(143, 23);
-            this.button11.TabIndex = 0;
-            this.button11.Text = "Построить остов";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.richTextBox2.Location = new System.Drawing.Point(13, 45);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
+            this.richTextBox2.Size = new System.Drawing.Size(143, 182);
+            this.richTextBox2.TabIndex = 132;
+            this.richTextBox2.Text = "";
             // 
             // checkBox3
             // 
@@ -2008,14 +2007,15 @@
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
-            // richTextBox2
+            // button11
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(13, 45);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(143, 182);
-            this.richTextBox2.TabIndex = 132;
-            this.richTextBox2.Text = "";
+            this.button11.Location = new System.Drawing.Point(13, 16);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(143, 23);
+            this.button11.TabIndex = 0;
+            this.button11.Text = "Построить остов";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // Form1
             // 
