@@ -437,7 +437,7 @@ namespace Discr_graph
 
                 if (pathsLengths[i] != 10000)
                     str += pathsLengths[i].ToString();
-                else str += "NaN";
+                else str += "Нет пути";
                     listBox2.Items.Add(str);
             }
             drawPath = true;
@@ -449,7 +449,7 @@ namespace Discr_graph
             if (g == null) { ShowError("Сначала создайте граф"); return; }
             if (g.isOrGraph == false) { ShowError("Нужен орграф"); return; }
             cores.Clear();
-            cores = Algorythms.GetCore(g.Matrix);
+            cores = Algorythms.Cores(g.Matrix);
             drawCores = true;
             ShowCoresInfo();
             Action1();
@@ -468,15 +468,16 @@ namespace Discr_graph
                 richTextBox1.Text += "\n";
                 }
         }
-        private void Crascal()
+        private void Prim()
         {
             edges.Clear();
 
             if (g == null) { ShowError("Сначала создайте граф"); return; }
+            if(g.isOrGraph) { ShowError("Cоздайте неориентированный граф"); return; }
             try
             {
-                edges = Algorythms.GetKruskal(g.Matrix);
-                ShowCrascalInfo();
+                edges = Algorythms.Prim(g.Matrix);
+                ShowPrimInfo();
                 drawEdges = true;
                 Action1();
             }
@@ -485,7 +486,7 @@ namespace Discr_graph
                 ShowError("Невозможно построить остов. Не все вершины соединены");
             }
         }
-        private void ShowCrascalInfo()
+        private void ShowPrimInfo()
         {
             richTextBox2.Text = "";
 
@@ -670,7 +671,7 @@ namespace Discr_graph
 
         private void button11_Click(object sender, EventArgs e)
         {
-            Crascal();
+            Prim();
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
@@ -678,16 +679,6 @@ namespace Discr_graph
             drawWeights = checkBox3.Checked;
             Action1();
         }
-
-
-
-
-
-
-
-
-
-
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

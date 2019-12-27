@@ -10,6 +10,7 @@ namespace Discr_graph
     {
         public static void Deicstr(Graph g, int startNode, List<List<int>> paths, List<int> pathsLengths)
         {
+            const int inf = 10000;
             int[,] graf = g.Matrix;
             int[] minput = new int[g.Count];
             int[] met = new int[g.Count];
@@ -23,14 +24,14 @@ namespace Discr_graph
 
             for (int i = 0; i < g.Count; i++)
             {
-                minput[i] = 10000;
+                minput[i] = inf;
                 met[i] = 1;
             }
             minput[startNode] = 0;
             do
             {
-                index = 10000;
-                min = 10000;
+                index = inf;
+                min = inf;
                 for (int i = 0; i < g.Count; i++)
                 {
                     if ((met[i] == 1) && (minput[i] < min))
@@ -39,7 +40,7 @@ namespace Discr_graph
                         index = i;
                     }
                 }
-                if (index != 10000)
+                if (index != inf)
                 {
                     for (int i = 0; i < g.Count; i++)
                     {
@@ -54,7 +55,7 @@ namespace Discr_graph
                     }
                     met[index] = 0;
                 }
-            } while (index < 10000);
+            } while (index < inf);
 
             foreach (var i in minput)
                 pathsLengths.Add(i);
@@ -66,7 +67,7 @@ namespace Discr_graph
                 end--;
                 k = 1;
                 weight = minput[end];
-                if (weight != 10000)
+                if (weight != inf)
                 {
                     do
                     {
@@ -102,22 +103,13 @@ namespace Discr_graph
             }
         }
 
-        public static void GetCore(Graph g, List<List<int>> cores)
-        {
-
-        }
-
-        private static void CalcDNF()
-        {
-
-        }
-        static private string GetDisunkInternal(int[,] graph)
+        static private string InternalArray(int[,] graph)
         {
             string str = "";
             for (int i = 0; i < graph.GetLength(0); i++)
             {
                 bool f = false;
-                for (int j = 0; j < graph.GetLength(1); j++) // проверяет есть ли единицы в строке
+                for (int j = 0; j < graph.GetLength(1); j++)
                     if (graph[i, j] != 0) f = true;
                 if (f)
                 {
@@ -128,16 +120,16 @@ namespace Discr_graph
                 }
             }
             if (str.Length - 1 > 0)
-                return str.Remove(str.Length - 1); // удаляет левый пробел
+                return str.Remove(str.Length - 1);
             else return "";
-        } // получает дизъюнкты для внут устойчивости
-        static private string GetDisunkExternal(int[,] graph)
+        }
+        static private string ExternalArray(int[,] graph)
         {
             string str = "";
             for (int i = 0; i < graph.GetLength(0); i++)
             {
                 bool f = false;
-                for (int j = 0; j < graph.GetLength(1); j++) // проверяет есть ли единицы в строке
+                for (int j = 0; j < graph.GetLength(1); j++)
                     if (graph[i, j] != 0) f = true;
                 str += i;
                 if (f)
@@ -146,9 +138,9 @@ namespace Discr_graph
                 str += " ";
             }
             if (str.Length - 1 > 0)
-                return str.Remove(str.Length - 1); // удаляет левый пробел
+                return str.Remove(str.Length - 1);
             else return "";
-        } // получает дизъюнкты для внешней устойчивости
+        }
         static private string SortString(string str)
         {
             List<string> newList = new List<string>();
@@ -160,8 +152,8 @@ namespace Discr_graph
             for (int i = 0; i < newList.Count; i++)
                 rez += newList[i];
             return rez;
-        } // сортирует строку
-        static private bool ContainsPogl(string str1, string str2)
+        }
+        static private bool MayBeAbsorbed(string str1, string str2)
         {
             for (int i = 0; i < str2.Length; i++)
             {
@@ -169,16 +161,16 @@ namespace Discr_graph
                     return false;
             }
             return true;
-        } // можно поглотить или нет
-        static private string[] GetDNF(string dis)
+        }
+        static private string[] DNF(string disukt)
         {
-            string[] arr = dis.Split(' ');
+            string[] arr = disukt.Split(' ');
             string[][] arr2 = new string[arr.Length][];
             for (int i = 0; i < arr.Length; i++)
                 arr2[i] = arr[i].Split('v');
             for (int i = 0; i < arr2.Length - 1; i++)
             {
-                List<string> list = new List<string>(); // храним список конъюнкций
+                List<string> list = new List<string>();
                 for (int k = 0; k < arr2[i].Length; k++)
                 {
                     for (int h = 0; h < arr2[i + 1].Length; h++)
@@ -194,10 +186,8 @@ namespace Discr_graph
                         bool f = false;
                         for (int s = 0; s < list.Count; s++)
                         {
-
-                            f = ContainsPogl(SortString(temp),list[s] );
+                            f = MayBeAbsorbed(SortString(temp), list[s]);
                             if (f) break;
-                                     
                         }
                         if (!f)
                             list.Add(SortString(temp));
@@ -205,28 +195,23 @@ namespace Discr_graph
                 }
                 arr2[i + 1] = list.ToArray();
             }
-
-           //
-
             for (int i = 0; i < arr2[arr2.Length - 1].Length; i++)
-            { // заменяем то, что можно поглотить, на ""
+            {
                 for (int j = 0; j < arr2[arr2.Length - 1].Length; j++)
                 {
-                    if (arr2[arr2.Length - 1][j] != "" && j != i && ContainsPogl(arr2[arr2.Length - 1][i], arr2[arr2.Length - 1][j]))
+                    if (arr2[arr2.Length - 1][j] != "" && j != i && MayBeAbsorbed(arr2[arr2.Length - 1][i], arr2[arr2.Length - 1][j]))
                     {
                         arr2[arr2.Length - 1][i] = "";
                     }
                 }
             }
-
-
             List<string> rez = new List<string>();
             for (int i = 0; i < arr2[arr2.Length - 1].Length; i++)
                 if (arr2[arr2.Length - 1][i] != "")
                     rez.Add(arr2[arr2.Length - 1][i]);
-            return rez.ToArray(); // возвращаем последнюю строку массива
-        } // упрощает дизъюнкты, приводит к днф
-        static private string[] GetObrDNF(string[] arr, int n)
+            return rez.ToArray();
+        }
+        static private string[] RevDNF(string[] arr, int n)
         {
             string[] rez = new string[arr.Length];
             for (int i = 0; i < arr.Length; i++)
@@ -234,22 +219,22 @@ namespace Discr_graph
                 rez[i] = "";
                 for (int j = 0; j < n; j++)
                 {
-                    if (!arr[i].Contains(j.ToString())) // если буквы не содержится в записи, то она добавляется
+                    if (!arr[i].Contains(j.ToString()))
                         rez[i] += j;
                 }
             }
             return rez;
-        } // получение недостающих от днф
-        static public List<List<int>> GetCore(int[,] graph)
+        }
+        static public List<List<int>> Cores(int[,] graph)
         {
             List<string> rez = new List<string>();
             List<List<int>> res = null;
-            string[] str1 = GetDNF(GetDisunkInternal(graph));
-            str1 = GetObrDNF(str1, graph.GetLength(0)); 
-            string[] str2 = GetDNF(GetDisunkExternal(graph)); 
+            string[] str1 = DNF(InternalArray(graph));
+            str1 = RevDNF(str1, graph.GetLength(0));
+            string[] str2 = DNF(ExternalArray(graph));
             for (int i = 0; i < str1.Length; i++)
                 for (int j = 0; j < str2.Length; j++)
-                    if (str1[i] == str2[j]) rez.Add(str2[i]);
+                    if (str1[i] == str2[j]) rez.Add(str2[j]);
             res = stoList(rez.ToArray());
             return res;
         }
@@ -266,40 +251,20 @@ namespace Discr_graph
             }
             return res;
         }
-        static public bool AllVertexConected(int[,] graph)
-        {
-            bool f = false;
-            for (int i = 0; i < graph.GetLength(0); i++)
-            {
-                f = false;
-                for (int j = 0; j < graph.GetLength(0); j++)
-                    if (graph[i, j] != 0)
-                    {
-                        f = true;
-                        break;
-                    }
-                for (int j = 0; j < graph.GetLength(0); j++)
-                    if (graph[j, i] != 0)
-                    {
-                        f = true;
-                        break;
-                    }
-            }
-            return f;
-        } // все ли вершины связаны
+
         private struct Edge
         {
-            public int v1, v2, w; // v1- вершина 1, v2 - вершина 2, w - ширина
+            public int v1, v2, w;
             public Edge(int v1, int v2, int w)
             {
                 this.v1 = v1;
                 this.v2 = v2;
                 this.w = w;
-            } // конструктор
-        } // ребро
+            }
+        }
         static private List<Edge> GetListEdges(int[,] graph)
         {
-            List<Edge> myEdges = new List<Edge>(); // список рёбер
+            List<Edge> myEdges = new List<Edge>();
             for (int i = 0; i < graph.GetLength(0); i++)
                 for (int j = i + 1; j < graph.GetLength(0); j++)
                     if (graph[i, j] != 0) myEdges.Add(new Edge(i, j, graph[i, j]));
@@ -312,95 +277,15 @@ namespace Discr_graph
                         myEdges[j] = t;
                     }
             return myEdges;
-        } // получение списка рёбер из таблицы весов и сортировка по возрастанию
-        static private bool IsItTree(int[,] graph)
-        {
-            List<int> visitedVertex = new List<int>();
-            visitedVertex.Add(0); // добавили первую вершину
-            bool cicl = false;
-            for (int i = 0; i < visitedVertex.Count; i++)
-            { // смотрим посещённые вершины (ищем куда дальше можем пойти)
-                for (int j = visitedVertex[i] + 1; j < graph.GetLength(0); j++)
-                {
-                    if (graph[visitedVertex[i], j] != 0)
-                    {
-                        if (!visitedVertex.Contains(j))
-                        {
-                            visitedVertex.Add(j);
-                        }
-                        else
-                        {
-                            cicl = true; // найден цикл
-                            break; // завершаем посещение вершин
-                        }
-                    }
-                }
-                if (cicl) break; // если найдет цикл то завершаем посещение вершин
-            }
-            if (cicl) return false; // если найден цикл, то результат функции отрицательный
-            else
-            {
-                if (visitedVertex.Count == graph.GetLength(0)) return true; // если смогли посетить все вершины, то граф является деревом
-                else return false; // иначе не дерево
-            }
         }
-        static private bool Can_we_make_Graph(List<Edge> edges, int count)
-        {
-            bool[] visitedVertex = new bool[count];
-            for (int i = 0; i < edges.Count; i++)
-            {
-                if (!visitedVertex[edges[i].v1] || !visitedVertex[edges[i].v2])
-                {
-                    visitedVertex[edges[i].v1] = true;
-                    visitedVertex[edges[i].v2] = true;
-                }
-                else
-                {
-                    List<int> a_vertex = new List<int>();
-                    List<int> b_vertex = new List<int>();
-                    for (int j = 0; j < edges.Count; j++)
-                    {
-                        if (j != i)
-                        {
-                            if (edges[j].v1 == edges[i].v1)
-                            {
-                                a_vertex.Add(edges[j].v2);
-                            }
-                            if (edges[j].v2 == edges[i].v1)
-                            {
-                                a_vertex.Add(edges[j].v1);
-                            }
-                            if (edges[j].v1 == edges[i].v2)
-                            {
-                                b_vertex.Add(edges[j].v2);
-                            }
-                            if (edges[j].v2 == edges[i].v2)
-                            {
-                                b_vertex.Add(edges[j].v1);
-                            }
-                        }
-                    }
-                    for (int j = 0; j < a_vertex.Count; j++)
-                    {
-                        for (int k = 0; k < b_vertex.Count; k++)
-                        {
-                            if (a_vertex[j] == b_vertex[k])
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        static private List<int> GetVertex(int[,] graph)
+
+        static private List<int> GetListVertex(int[,] graph)
         {
             List<int> myVertex = new List<int>();
             for (int i = 0; i < graph.GetLength(0); i++)
                 myVertex.Add(i);
             return myVertex;
-        } // получение списка вершин
+        }
         static private int[,] GetGraphFromEdges(List<Edge> listEdges)
         {
             List<int> vertex = new List<int>();
@@ -418,7 +303,7 @@ namespace Discr_graph
                 graph[listEdges[i].v2, listEdges[i].v1] = graph[listEdges[i].v1, listEdges[i].v2];
             }
             return graph;
-        } // строит граф из рёбер
+        }
         static public int WeightOstov(int[,] graph)
         {
             int sum = 0;
@@ -426,53 +311,58 @@ namespace Discr_graph
                 for (int j = 0; j < graph.GetLength(0); j++)
                     sum += graph[i, j];
             return sum / 2;
-        } // получение веса остова
-        static private int NecessaryEdge(List<Edge> notUsedEdges, List<int> usedVertex)
+        }
+        static private int GetMinEdge(List<Edge> notUsedEdges, List<int> usedVertex)
         {
             int index = -1;
+            int minW = 1000000;
             for (int i = 0; i < notUsedEdges.Count; i++)
             {
-                if (usedVertex.IndexOf(notUsedEdges[i].v1) == -1 || usedVertex.IndexOf(notUsedEdges[i].v2) == -1)
+                if (usedVertex.Count == 0)
                 {
-                    return i;
+                    if (notUsedEdges[i].w <= minW)
+                    {
+                        minW = notUsedEdges[i].w;
+                        index = i;
+                    }
+                }
+                else if ((!usedVertex.Contains(notUsedEdges[i].v1) && usedVertex.Contains(notUsedEdges[i].v2)) || (!usedVertex.Contains(notUsedEdges[i].v2) && usedVertex.Contains(notUsedEdges[i].v1)))
+                {
+                    if (notUsedEdges[i].w <= minW)
+                    {
+                        minW = notUsedEdges[i].w;
+                        index = i;
+                    }
                 }
             }
             return index;
-        } // поиск необходимого ребра
-        static public List<ValueTuple<int, int>> GetKruskal(int[,] graph)
+        }
+        static public List<ValueTuple<int, int>> Prim(int[,] graph)
         {
             List<Edge> rez = new List<Edge>();
-            List<Edge> notUsedEdges = GetListEdges(graph); // неиспользованные рёбра
-            List<int> notUsedVertex = GetVertex(graph); // неиспользованные вершины
+            List<Edge> notUsedEdges = GetListEdges(graph);
+            List<int> notUsedVertex = GetListVertex(graph);
             List<int> usedVertex = new List<int>();
-            rez.Add(notUsedEdges[0]); // добавили первое ребро
-            notUsedVertex.Remove(notUsedEdges[0].v1);
-            notUsedVertex.Remove(notUsedEdges[0].v2);
-            usedVertex.Add(notUsedEdges[0].v1);
-            usedVertex.Add(notUsedEdges[0].v2);
-            notUsedEdges.RemoveAt(0);
+            int t = GetMinEdge(notUsedEdges, usedVertex);
+            rez.Add(notUsedEdges[t]);
+            notUsedVertex.Remove(notUsedEdges[t].v1);
+            notUsedVertex.Remove(notUsedEdges[t].v2);
+            usedVertex.Add(notUsedEdges[t].v1);
+            usedVertex.Add(notUsedEdges[t].v2);
+            notUsedEdges.RemoveAt(t);
             while (notUsedVertex.Count > 0)
-            { // пока не используются все вершины
-                int index = NecessaryEdge(notUsedEdges, usedVertex);
+            {
+                int index = GetMinEdge(notUsedEdges, usedVertex);
                 if (index == -1) throw new Exception("Ошибка построения Остова");
-                rez.Add(notUsedEdges[index]); // добавили неиспользованное ребро
+                rez.Add(notUsedEdges[index]);
                 notUsedVertex.Remove(notUsedEdges[index].v1);
                 notUsedVertex.Remove(notUsedEdges[index].v2);
                 usedVertex.Add(notUsedEdges[index].v1);
                 usedVertex.Add(notUsedEdges[index].v2);
-                notUsedEdges.RemoveAt(index); // удалили из списка это же ребро
-            }
-            for (int i = 0; i < notUsedEdges.Count && !IsItTree(GetGraphFromEdges(rez)); i++)
-            { // пока не будет деревом, необходимо ещё добавлять вершины, даже если все вершины использованы
-                rez.Add(notUsedEdges[i]); // добавили наименьшее ребро
-                if (Can_we_make_Graph(rez, graph.GetLength(0)) && AllVertexConected(GetGraphFromEdges(rez)))
-                {
-                    return GetEdges(rez);
-                }
-               // else rez.RemoveAt(rez.Count - 1); // удалили только что добавленное ребро
+                notUsedEdges.RemoveAt(index);
             }
             return GetEdges(rez);
-        } // алгоритм Краскала
+        }
         static List<ValueTuple<int, int>> GetEdges(List<Edge> ed)
         {
             List<ValueTuple<int, int>> res = new List<(int, int)>();

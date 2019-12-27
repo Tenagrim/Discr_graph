@@ -277,7 +277,7 @@
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(164, 30);
             this.radioButton4.TabIndex = 4;
-            this.radioButton4.Text = "Минимальный остов графа\r\n(метод Краскала)";
+            this.radioButton4.Text = "Минимальный остов графа\r\n(метод Прима)";
             this.radioButton4.UseVisualStyleBackColor = true;
             this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
             // 
