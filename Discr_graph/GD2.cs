@@ -15,6 +15,8 @@ namespace Discr_graph
         public static int offsetY = 0;                  // Координата Y центра грава на форме (координата Х picturebox-а)
         public static double radiusOut = 300;           // Радиус расположения вершин
         public static int size = 90;               //90     // Размер вершин
+        public static int levelsOffset = 25;       // расстояние между уровнями ярусной формы
+        public static int elementInLevelsOffset = 95;
         public static int fontSize = 24;                // Размер шрифта вершин
         public static int weightsfontSize = 22;         // Размер шрифта весов
         public static float strokeWidth = 4.5f;         // Ширина обводки вершин и линий
@@ -81,6 +83,17 @@ namespace Discr_graph
             if (weights)
                 DrawWeights(e, g);
         }
+        public static void DrawGraphParallel(PaintEventArgs e, Graph g, List<List<int>> levels, bool weights) // Нарисовать граф и выделить указанные ребра
+        {
+
+            CalcPositions(g, levels);
+            DrawLines(e, g);
+            DrawNodes(e, g);
+            DrawNames(e, g);
+            if (weights)
+                DrawWeights(e, g);
+            g.TruncPos();
+        }
         private static Color Getcolor(int ind)
         {
             if (ind >= coresColors.Length) ind %= coresColors.Length;
@@ -143,6 +156,24 @@ namespace Discr_graph
                 if (k < g.Count)
                     Npositions[k] = new Position(Math.Cos(heading ) * radiusOut, Math.Sin(heading ) * radiusOut);
                 k++;
+            }
+            g.Positions = Npositions;
+        }
+        private static void CalcPositions(Graph g,List<List<int>> levels)
+        {
+            Position[] Npositions = new Position[g.Count];
+            int k = 0;
+            int curX = 0;
+            int curY = size /2 + 15 -offsetY;
+            for(int i =0; i< levels.Count; i++)
+            {
+                curX = (offsetX-(((levels[i].Count * size) + (levels[i].Count - 1 * elementInLevelsOffset)))-offsetX);
+                for (int j = 0; j < levels[i].Count; j++)
+                {
+                    Npositions[levels[i][j]-1] = new Position(curX, curY);
+                    curX += elementInLevelsOffset + size;
+                }
+                curY += levelsOffset + size;
             }
             g.Positions = Npositions;
         }

@@ -201,6 +201,11 @@
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button11 = new System.Windows.Forms.Button();
+            this.mpf_panel = new System.Windows.Forms.Panel();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -214,6 +219,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.core_panel.SuspendLayout();
             this.crascal_panel.SuspendLayout();
+            this.mpf_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -259,6 +265,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButton7);
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.deikstr_rb);
@@ -266,7 +273,7 @@
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(324, 137);
+            this.groupBox1.Size = new System.Drawing.Size(516, 137);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
@@ -275,9 +282,9 @@
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(151, 65);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(164, 30);
+            this.radioButton4.Size = new System.Drawing.Size(99, 43);
             this.radioButton4.TabIndex = 4;
-            this.radioButton4.Text = "Минимальный остов графа\r\n(метод Прима)";
+            this.radioButton4.Text = "Минимальный\r\nостов графа\r\n(метод Прима)";
             this.radioButton4.UseVisualStyleBackColor = true;
             this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
             // 
@@ -2017,11 +2024,62 @@
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
+            // mpf_panel
+            // 
+            this.mpf_panel.Controls.Add(this.button13);
+            this.mpf_panel.Controls.Add(this.button12);
+            this.mpf_panel.Controls.Add(this.richTextBox3);
+            this.mpf_panel.Location = new System.Drawing.Point(508, 7);
+            this.mpf_panel.Name = "mpf_panel";
+            this.mpf_panel.Size = new System.Drawing.Size(286, 333);
+            this.mpf_panel.TabIndex = 127;
+            this.mpf_panel.Visible = false;
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Location = new System.Drawing.Point(269, 19);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(174, 17);
+            this.radioButton7.TabIndex = 5;
+            this.radioButton7.Text = "Ярусно параллельная форма";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            this.radioButton7.CheckedChanged += new System.EventHandler(this.radioButton7_CheckedChanged);
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(10, 53);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(141, 171);
+            this.richTextBox3.TabIndex = 0;
+            this.richTextBox3.Text = "";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(10, 24);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(221, 23);
+            this.button12.TabIndex = 1;
+            this.button12.Text = "Показать ярусно параллельную форму";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(10, 230);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(221, 23);
+            this.button13.TabIndex = 2;
+            this.button13.Text = "Показать исходную форму";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1243, 724);
+            this.Controls.Add(this.mpf_panel);
             this.Controls.Add(this.crascal_panel);
             this.Controls.Add(this.core_panel);
             this.Controls.Add(this.deikstr_panel);
@@ -2058,6 +2116,7 @@
             this.core_panel.ResumeLayout(false);
             this.crascal_panel.ResumeLayout(false);
             this.crascal_panel.PerformLayout();
+            this.mpf_panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2237,6 +2296,11 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.Panel mpf_panel;
+        private System.Windows.Forms.RadioButton radioButton7;
+        private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
     }
 }
 

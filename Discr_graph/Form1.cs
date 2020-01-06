@@ -15,17 +15,20 @@ namespace Discr_graph
     public partial class Form1 : Form
     {
         Graph g = null;
+        Graph gPar = null;
         List<Graph> savedG = new List<Graph>();
         List<string> namesSaved = new List<string>();
         List<int> path = new List<int>();
         List<List<int>> paThs1 = new List<List<int>>();
         List<List<int>> cores = new List<List<int>>();
+        List<List<int>> levels = new List<List<int>>();
         List<ValueTuple<int, int>> edges = new List<ValueTuple<int, int>>();
 
         bool drawPath = false;
         bool drawEdges = false;
         bool drawWeights = false;
         bool drawCores = false;
+        bool drawLewels = false;
 
 
         public Form1()
@@ -38,6 +41,7 @@ namespace Discr_graph
             saveLoad_panel.Location = matrix_panel.Location;
             core_panel.Location = matrix_panel.Location;
             deikstr_panel.Location = matrix_panel.Location;
+            mpf_panel.Location = matrix_panel.Location;
         }
 
         private void Action1()
@@ -68,8 +72,7 @@ namespace Discr_graph
 
         private void button1_Click(object sender, EventArgs e)
         {
-            path.Clear();
-            Action1();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -88,11 +91,24 @@ namespace Discr_graph
 
             if (g != null)
             {
-                if (cores.Count!=0 && drawCores) 
+                if (cores.Count != 0 && drawCores)
                 {
                     GD2.DrawGraph(e, g, cores);
                 }
-               else if (path.Count != 0 && drawPath)
+                else if (levels.Count != 0 && drawLewels)
+                {
+                    try
+                    {
+                        GD2.DrawGraphParallel(e, g, levels, false);
+                    }
+                    catch (ArgumentException)
+                    {
+                        ShowError("Привести данный граф к ярусно-параллельной форме невозможно, так как он имеет цикл");
+                        path.Clear();
+                        Update(sender, e);
+                    }
+                }
+                else if (path.Count != 0 && drawPath)
                 {
                     try
                     {
@@ -129,10 +145,13 @@ namespace Discr_graph
             drawCores = false;
             drawPath = false;
             drawEdges = false;
+            drawLewels = false;
             path.Clear();
             paThs1.Clear();
             cores.Clear();
             edges.Clear();
+            levels.Clear();
+
 
         }
 
@@ -172,6 +191,7 @@ namespace Discr_graph
                     crascal_panel.Visible = false;
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
+                    mpf_panel.Visible = false;
                     break;
                 case 2:
                     matrix_panel.Visible = false;
@@ -179,6 +199,7 @@ namespace Discr_graph
                     crascal_panel.Visible = false;
                     saveLoad_panel.Visible = true;
                     core_panel.Visible = false;
+                    mpf_panel.Visible = false;
                     break;
                 case 3:
                     matrix_panel.Visible = false;
@@ -186,6 +207,7 @@ namespace Discr_graph
                     crascal_panel.Visible = false;
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
+                    mpf_panel.Visible = false;
                     break;
                 case 4:
                     matrix_panel.Visible = false;
@@ -193,6 +215,7 @@ namespace Discr_graph
                     crascal_panel.Visible = false;
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = true;
+                    mpf_panel.Visible = false;
                     break;
                 case 5:
                     matrix_panel.Visible = false;
@@ -200,6 +223,15 @@ namespace Discr_graph
                     crascal_panel.Visible = true;
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
+                    mpf_panel.Visible = false;
+                    break;
+                case 6:
+                    matrix_panel.Visible = false;
+                    deikstr_panel.Visible = false;
+                    crascal_panel.Visible = false;
+                    saveLoad_panel.Visible = false;
+                    core_panel.Visible = false;
+                    mpf_panel.Visible = true;
                     break;
             }
         }
@@ -433,12 +465,13 @@ namespace Discr_graph
             listBox2.Items.Clear();
 
             for (int i = 0; i < pathsLengths.Count; i++)
-            { string str = "Путь " + (int)numericUpDown2.Value + "->" + (i + 1) + " = ";
+            {
+                string str = "Путь " + (int)numericUpDown2.Value + "->" + (i + 1) + " = ";
 
                 if (pathsLengths[i] != 10000)
                     str += pathsLengths[i].ToString();
                 else str += "Нет пути";
-                    listBox2.Items.Add(str);
+                listBox2.Items.Add(str);
             }
             drawPath = true;
             Action1();
@@ -460,20 +493,20 @@ namespace Discr_graph
             richTextBox1.Text += "Количество ядер: " + cores.Count + "\n";
             for (int i = 0; i < cores.Count; i++)
             {
-                richTextBox1.Text +=(i+1) + ": ";
+                richTextBox1.Text += (i + 1) + ": ";
                 for (int j = 0; j < cores[i].Count; j++)
                 {
-                    richTextBox1.Text += (cores[i][j]+1).ToString() + " ";
+                    richTextBox1.Text += (cores[i][j] + 1).ToString() + " ";
                 }
                 richTextBox1.Text += "\n";
-                }
+            }
         }
         private void Prim()
         {
             edges.Clear();
 
             if (g == null) { ShowError("Сначала создайте граф"); return; }
-            if(g.isOrGraph) { ShowError("Cоздайте неориентированный граф"); return; }
+            if (g.isOrGraph) { ShowError("Cоздайте неориентированный граф"); return; }
             try
             {
                 edges = Algorythms.Prim(g.Matrix);
@@ -490,11 +523,31 @@ namespace Discr_graph
         {
             richTextBox2.Text = "";
 
-            richTextBox2.Text += "Количество ребер в остове: " + edges.Count+ "\n";
+            richTextBox2.Text += "Количество ребер в остове: " + edges.Count + "\n";
             foreach (ValueTuple<int, int> i in edges)
             {
-                richTextBox2.Text += (i.Item1+1) + " - " + (i.Item2+1) + "\n";
+                richTextBox2.Text += (i.Item1 + 1) + " - " + (i.Item2 + 1) + "\n";
             }
+        }
+
+        private void ShowMPF()
+        {
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+                        if (g.isOrGraph == false) { ShowError("Нужен орграф"); return; }
+            ClearDrawArgs();
+            string mpf = "";
+            levels.Clear();
+            try
+            {
+                Algorythms.MakeMPF(g.Matrix, ref mpf, ref levels);
+            }
+            catch (ArgumentException)
+            {
+                ShowError("Привести данный граф к ярусно-параллельной форме невозможно, так как он имеет цикл");
+            }                  
+            richTextBox3.Text = mpf;
+            drawLewels = true;
+            Action1();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -680,10 +733,31 @@ namespace Discr_graph
             Action1();
         }
 
+        private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            showTask(6);
+            richTextBox3.Text = "";
+            ClearDrawArgs();
+            Action1();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+            ShowMPF();
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+            ClearDrawArgs();
+            Action1();
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
+
+
     }
 
- 
+
 }
