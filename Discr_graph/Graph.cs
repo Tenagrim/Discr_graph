@@ -13,7 +13,7 @@ namespace Discr_graph
         private int[,] matrix;
         public int[,] Matrix
         {
-            get 
+            get
             {
                 if (isOrGraph)
                     return matrix;
@@ -134,6 +134,30 @@ namespace Discr_graph
             isOrGraph = false;
             positions = null;
         }
+        public List<GraphVertex> GetVertices()
+        {
+            List<GraphVertex> res = new List<GraphVertex>();
+            for (int i = 0; i < count; i++)
+            {
+                res.Add(new GraphVertex(i.ToString()));
+            }
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = i+1; j < count; j++)
+                {
+                    if (matrix[i, j] != 0)
+                    {
+                        res[i].Edges.Add(new GraphEdge(res[j], matrix[i, j]));
+                        res[j].Edges.Add(new GraphEdge(res[i], matrix[i, j]));
+                        res[i].ConnectedVerticies.Add(res[j]);
+                        res[j].ConnectedVerticies.Add(res[i]);
+                    }
+                }
+            }
+
+            return res;
+        }
+
         private int GetLines()
         {
             int c = 0;

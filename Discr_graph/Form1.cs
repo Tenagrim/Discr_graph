@@ -42,6 +42,7 @@ namespace Discr_graph
             core_panel.Location = matrix_panel.Location;
             deikstr_panel.Location = matrix_panel.Location;
             mpf_panel.Location = matrix_panel.Location;
+            components_panel.Location = matrix_panel.Location;
         }
 
         private void Action1()
@@ -185,13 +186,14 @@ namespace Discr_graph
         {
             switch (n)
             {
-                case 1:
+                case 1:                 
                     matrix_panel.Visible = true;
                     deikstr_panel.Visible = false;
                     crascal_panel.Visible = false;
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
+                    components_panel.Visible = false;
                     break;
                 case 2:
                     matrix_panel.Visible = false;
@@ -200,6 +202,7 @@ namespace Discr_graph
                     saveLoad_panel.Visible = true;
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
+                    components_panel.Visible = false;
                     break;
                 case 3:
                     matrix_panel.Visible = false;
@@ -208,6 +211,7 @@ namespace Discr_graph
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
+                    components_panel.Visible = false;
                     break;
                 case 4:
                     matrix_panel.Visible = false;
@@ -216,6 +220,7 @@ namespace Discr_graph
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = true;
                     mpf_panel.Visible = false;
+                    components_panel.Visible = false;
                     break;
                 case 5:
                     matrix_panel.Visible = false;
@@ -224,6 +229,7 @@ namespace Discr_graph
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
+                    components_panel.Visible = false;
                     break;
                 case 6:
                     matrix_panel.Visible = false;
@@ -232,6 +238,16 @@ namespace Discr_graph
                     saveLoad_panel.Visible = false;
                     core_panel.Visible = false;
                     mpf_panel.Visible = true;
+                    components_panel.Visible = false;
+                    break;
+                case 7:
+                    matrix_panel.Visible = false;
+                    deikstr_panel.Visible = false;
+                    crascal_panel.Visible = false;
+                    saveLoad_panel.Visible = false;
+                    core_panel.Visible = false;
+                    mpf_panel.Visible = false;
+                    components_panel.Visible = true;
                     break;
             }
         }
@@ -408,8 +424,6 @@ namespace Discr_graph
             f1.Close();
             UpdateListbox(listBox1, namesSaved);
         }
-
-
         private void MakeGraph()
         {
             path.Clear();
@@ -476,7 +490,16 @@ namespace Discr_graph
             drawPath = true;
             Action1();
         }
-
+        private void ShowComponents()
+        {
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+            if (g.isOrGraph == true) { ShowError("Нужен неорграф"); return; }
+            cores.Clear();
+            Algorythms.FindConnectivityComponents(g, cores);
+            drawCores = true;
+            ShowComponentsInfo();
+            Action1();
+        }
         private void Cores()
         {
             if (g == null) { ShowError("Сначала создайте граф"); return; }
@@ -487,6 +510,7 @@ namespace Discr_graph
             ShowCoresInfo();
             Action1();
         }
+
         private void ShowCoresInfo()
         {
             richTextBox1.Text = "";
@@ -499,6 +523,20 @@ namespace Discr_graph
                     richTextBox1.Text += (cores[i][j] + 1).ToString() + " ";
                 }
                 richTextBox1.Text += "\n";
+            }
+        }
+        private void ShowComponentsInfo()
+        {
+            richTextBox4.Text = "";
+            richTextBox4.Text += "Компоненты связности: " + cores.Count + "\n";
+            for (int i = 0; i < cores.Count; i++)
+            {
+                richTextBox4.Text += (i + 1) + ": ";
+                for (int j = 0; j < cores[i].Count; j++)
+                {
+                    richTextBox4.Text += (cores[i][j] + 1).ToString() + " ";
+                }
+                richTextBox4.Text += "\n";
             }
         }
         private void Prim()
@@ -549,7 +587,10 @@ namespace Discr_graph
             drawLewels = true;
             Action1();
         }
+        private void Clique()
+        {
 
+        }
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Update(sender, e);
@@ -752,6 +793,32 @@ namespace Discr_graph
             if (g == null) { ShowError("Сначала создайте граф"); return; }
             ClearDrawArgs();
             Action1();
+        }
+
+        private void radioButton8_CheckedChanged(object sender, EventArgs e)
+        {
+            showTask(7);
+            richTextBox4.Text = "";
+            ClearDrawArgs();
+            Action1();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            ShowComponents();
+        }
+
+        private void radioButton9_CheckedChanged(object sender, EventArgs e)
+        {
+            showTask(8);
+            richTextBox5.Text = "";
+            ClearDrawArgs();
+            Action1();
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            Clique();
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

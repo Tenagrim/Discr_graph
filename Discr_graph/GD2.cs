@@ -26,7 +26,7 @@ namespace Discr_graph
         public static Color outlineColor = Color.Blue;  // Цвет обводки вершин
         public static Color namesColor = Color.Blue;    // Цвет названий вершин
         public static Color weightsColor = Color.Blue;  // Цвет весов
-        public static Color[] coresColors = { Color.Magenta, Color.Cyan, Color.LightGreen, Color.Purple, Color.DarkOrange, Color.Chocolate, Color.Brown,Color.Crimson, Color.Firebrick, Color.Maroon }; // Цвета для нескольких ядер
+        public static Color[] coresColors = { Color.Magenta, Color.Cyan, Color.LightGreen, Color.Purple, Color.DarkOrange, Color.Chocolate, Color.Brown, Color.Crimson, Color.Firebrick, Color.Maroon }; // Цвета для нескольких ядер
 
         public static void SetStartAngle(int n)
         {
@@ -152,25 +152,25 @@ namespace Discr_graph
             int k = 0;
             for (double i = 0; i < 360; i += (double)(360 / (double)g.Count))
             {
-                double heading = ((i+startAngle) * 3.1415926535897932384626433832795 / 180);
+                double heading = ((i + startAngle) * 3.1415926535897932384626433832795 / 180);
                 if (k < g.Count)
-                    Npositions[k] = new Position(Math.Cos(heading ) * radiusOut, Math.Sin(heading ) * radiusOut);
+                    Npositions[k] = new Position(Math.Cos(heading) * radiusOut, Math.Sin(heading) * radiusOut);
                 k++;
             }
             g.Positions = Npositions;
         }
-        private static void CalcPositions(Graph g,List<List<int>> levels)
+        private static void CalcPositions(Graph g, List<List<int>> levels)
         {
             Position[] Npositions = new Position[g.Count];
             int k = 0;
             int curX = 0;
-            int curY = size /2 + 15 -offsetY;
-            for(int i =0; i< levels.Count; i++)
+            int curY = size / 2 + 15 - offsetY;
+            for (int i = 0; i < levels.Count; i++)
             {
-                curX = (offsetX-(((levels[i].Count * size) + (levels[i].Count - 1 * elementInLevelsOffset)))-offsetX);
+                curX = (offsetX - (((levels[i].Count * size) + (levels[i].Count - 1 * elementInLevelsOffset))) - offsetX);
                 for (int j = 0; j < levels[i].Count; j++)
                 {
-                    Npositions[levels[i][j]-1] = new Position(curX, curY);
+                    Npositions[levels[i][j] - 1] = new Position(curX, curY);
                     curX += elementInLevelsOffset + size;
                 }
                 curY += levelsOffset + size;
@@ -206,8 +206,8 @@ namespace Discr_graph
             {
                 if (inds.Contains(i))
                 {
-                    DrawCircle(e, size , (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
-                    DrawCircleStroke(e, size , (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
+                    DrawCircle(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, fillcolor);
+                    DrawCircleStroke(e, size, (int)g.Positions[i].X, (int)g.Positions[i].Y, Col);
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace Discr_graph
             {
                 Col = Getcolor(i);
                 DrawNodes(e, g, cores[i], Col);
-               // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
+                // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
             }
         }
 
@@ -292,7 +292,7 @@ namespace Discr_graph
                 Col = Getcolor(i);
                 DrawNames(e, g, cores[i], Col);
             }
-           // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
+            // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
         }
         private static void DrawNames(PaintEventArgs e, Graph g, List<ValueTuple<int, int>> edges)
         {
@@ -467,7 +467,11 @@ namespace Discr_graph
                 {
                     if (g.Matrix[i, j] != 0)
                     {
-                        DrawArrow(e, g.Positions[i], g.Positions[j], arrowColor);
+                        if (g.isOrGraph)
+                            DrawArrow(e, g.Positions[i], g.Positions[j], arrowColor);
+                        else
+                            DrawLine(e, g.Positions[i], g.Positions[j], arrowColor);
+
                     }
                 }
             }
@@ -501,7 +505,13 @@ namespace Discr_graph
                     {
 
                         if (g.Matrix[i, j] != 0 && i != j)
-                            DrawArrow(e, g.Positions[i], g.Positions[j], Col);
+                        {
+                            if (g.isOrGraph)
+                                DrawArrow(e, g.Positions[i], g.Positions[j], Col);
+                            else
+                                DrawLine(e, g.Positions[i], g.Positions[j], Col);
+                        }
+
                     }
                 }
             }
@@ -513,7 +523,7 @@ namespace Discr_graph
             {
                 Col = Getcolor(n);
                 DrawLinesOR(e, g, cores[n], Col);
-               // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
+                // Col = Color.FromArgb(Col.R - (255 / cores.Count), Col.G + (255 / cores.Count), Col.B + (255 / cores.Count));
             }
         }
 

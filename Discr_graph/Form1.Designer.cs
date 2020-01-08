@@ -33,6 +33,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.deikstr_rb = new System.Windows.Forms.RadioButton();
@@ -202,10 +204,16 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button11 = new System.Windows.Forms.Button();
             this.mpf_panel = new System.Windows.Forms.Panel();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.button12 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.components_panel = new System.Windows.Forms.Panel();
+            this.richTextBox4 = new System.Windows.Forms.RichTextBox();
+            this.button14 = new System.Windows.Forms.Button();
+            this.clicue_panel = new System.Windows.Forms.Panel();
+            this.richTextBox5 = new System.Windows.Forms.RichTextBox();
+            this.button15 = new System.Windows.Forms.Button();
+            this.radioButton9 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -220,6 +228,8 @@
             this.core_panel.SuspendLayout();
             this.crascal_panel.SuspendLayout();
             this.mpf_panel.SuspendLayout();
+            this.components_panel.SuspendLayout();
+            this.clicue_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -265,6 +275,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioButton9);
+            this.groupBox1.Controls.Add(this.radioButton8);
             this.groupBox1.Controls.Add(this.radioButton7);
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.radioButton3);
@@ -276,6 +288,28 @@
             this.groupBox1.Size = new System.Drawing.Size(516, 137);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(269, 42);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(145, 17);
+            this.radioButton8.TabIndex = 6;
+            this.radioButton8.Text = "Компоненты связности";
+            this.radioButton8.UseVisualStyleBackColor = true;
+            this.radioButton8.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Location = new System.Drawing.Point(269, 19);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(174, 17);
+            this.radioButton7.TabIndex = 5;
+            this.radioButton7.Text = "Ярусно параллельная форма";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            this.radioButton7.CheckedChanged += new System.EventHandler(this.radioButton7_CheckedChanged);
             // 
             // radioButton4
             // 
@@ -2029,40 +2063,11 @@
             this.mpf_panel.Controls.Add(this.button13);
             this.mpf_panel.Controls.Add(this.button12);
             this.mpf_panel.Controls.Add(this.richTextBox3);
-            this.mpf_panel.Location = new System.Drawing.Point(508, 7);
+            this.mpf_panel.Location = new System.Drawing.Point(1158, 268);
             this.mpf_panel.Name = "mpf_panel";
             this.mpf_panel.Size = new System.Drawing.Size(286, 333);
             this.mpf_panel.TabIndex = 127;
             this.mpf_panel.Visible = false;
-            // 
-            // radioButton7
-            // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(269, 19);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(174, 17);
-            this.radioButton7.TabIndex = 5;
-            this.radioButton7.Text = "Ярусно параллельная форма";
-            this.radioButton7.UseVisualStyleBackColor = true;
-            this.radioButton7.CheckedChanged += new System.EventHandler(this.radioButton7_CheckedChanged);
-            // 
-            // richTextBox3
-            // 
-            this.richTextBox3.Location = new System.Drawing.Point(10, 53);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(141, 171);
-            this.richTextBox3.TabIndex = 0;
-            this.richTextBox3.Text = "";
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(10, 24);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(221, 23);
-            this.button12.TabIndex = 1;
-            this.button12.Text = "Показать ярусно параллельную форму";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button13
             // 
@@ -2074,11 +2079,101 @@
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(10, 24);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(221, 23);
+            this.button12.TabIndex = 1;
+            this.button12.Text = "Показать ярусно параллельную форму";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(10, 53);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.ReadOnly = true;
+            this.richTextBox3.Size = new System.Drawing.Size(141, 171);
+            this.richTextBox3.TabIndex = 0;
+            this.richTextBox3.Text = "";
+            // 
+            // components_panel
+            // 
+            this.components_panel.Controls.Add(this.richTextBox4);
+            this.components_panel.Controls.Add(this.button14);
+            this.components_panel.Location = new System.Drawing.Point(812, 7);
+            this.components_panel.Name = "components_panel";
+            this.components_panel.Size = new System.Drawing.Size(278, 333);
+            this.components_panel.TabIndex = 128;
+            this.components_panel.Visible = false;
+            // 
+            // richTextBox4
+            // 
+            this.richTextBox4.Location = new System.Drawing.Point(13, 53);
+            this.richTextBox4.Name = "richTextBox4";
+            this.richTextBox4.ReadOnly = true;
+            this.richTextBox4.Size = new System.Drawing.Size(141, 171);
+            this.richTextBox4.TabIndex = 3;
+            this.richTextBox4.Text = "";
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(13, 24);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(221, 23);
+            this.button14.TabIndex = 2;
+            this.button14.Text = "Показать компоненты связности";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // clicue_panel
+            // 
+            this.clicue_panel.Controls.Add(this.button15);
+            this.clicue_panel.Controls.Add(this.richTextBox5);
+            this.clicue_panel.Location = new System.Drawing.Point(534, 7);
+            this.clicue_panel.Name = "clicue_panel";
+            this.clicue_panel.Size = new System.Drawing.Size(255, 333);
+            this.clicue_panel.TabIndex = 129;
+            this.clicue_panel.Visible = false;
+            // 
+            // richTextBox5
+            // 
+            this.richTextBox5.Location = new System.Drawing.Point(9, 54);
+            this.richTextBox5.Name = "richTextBox5";
+            this.richTextBox5.ReadOnly = true;
+            this.richTextBox5.Size = new System.Drawing.Size(141, 171);
+            this.richTextBox5.TabIndex = 4;
+            this.richTextBox5.Text = "";
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(9, 24);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(221, 23);
+            this.button15.TabIndex = 5;
+            this.button15.Text = "Показать клику графа";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // radioButton9
+            // 
+            this.radioButton9.AutoSize = true;
+            this.radioButton9.Location = new System.Drawing.Point(269, 65);
+            this.radioButton9.Name = "radioButton9";
+            this.radioButton9.Size = new System.Drawing.Size(90, 17);
+            this.radioButton9.TabIndex = 7;
+            this.radioButton9.Text = "Клика графа";
+            this.radioButton9.UseVisualStyleBackColor = true;
+            this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1243, 724);
+            this.Controls.Add(this.clicue_panel);
+            this.Controls.Add(this.components_panel);
             this.Controls.Add(this.mpf_panel);
             this.Controls.Add(this.crascal_panel);
             this.Controls.Add(this.core_panel);
@@ -2117,6 +2212,8 @@
             this.crascal_panel.ResumeLayout(false);
             this.crascal_panel.PerformLayout();
             this.mpf_panel.ResumeLayout(false);
+            this.components_panel.ResumeLayout(false);
+            this.clicue_panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2301,6 +2398,14 @@
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.RadioButton radioButton8;
+        private System.Windows.Forms.Panel components_panel;
+        private System.Windows.Forms.RichTextBox richTextBox4;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.RadioButton radioButton9;
+        private System.Windows.Forms.Panel clicue_panel;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.RichTextBox richTextBox5;
     }
 }
 
