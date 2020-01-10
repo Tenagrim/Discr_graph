@@ -1,17 +1,10 @@
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\Discr_graph.exe.config
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\Discr_graph.exe
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\Discr_graph.pdb
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.dll
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.GLControl.dll
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.pdb
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.xml
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.GLControl.pdb
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\bin\Debug\OpenTK.GLControl.xml
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.csprojAssemblyReference.cache
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.Form1.resources
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.Properties.Resources.resources
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.csproj.GenerateResource.cache
-T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.csproj.CopyComplete
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.exe
 T:\Projects\VisualStudio\Discr_graph\Discr_graph\obj\Debug\Discr_graph.pdb
 D:\Projects\Discr_graph\Discr_graph\bin\Debug\Discr_graph.exe.config
