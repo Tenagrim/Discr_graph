@@ -33,6 +33,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton9 = new System.Windows.Forms.RadioButton();
             this.radioButton8 = new System.Windows.Forms.RadioButton();
             this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
@@ -211,9 +212,8 @@
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
             this.button14 = new System.Windows.Forms.Button();
             this.clicue_panel = new System.Windows.Forms.Panel();
-            this.richTextBox5 = new System.Windows.Forms.RichTextBox();
             this.button15 = new System.Windows.Forms.Button();
-            this.radioButton9 = new System.Windows.Forms.RadioButton();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -288,6 +288,17 @@
             this.groupBox1.Size = new System.Drawing.Size(516, 137);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
+            // 
+            // radioButton9
+            // 
+            this.radioButton9.AutoSize = true;
+            this.radioButton9.Location = new System.Drawing.Point(269, 65);
+            this.radioButton9.Name = "radioButton9";
+            this.radioButton9.Size = new System.Drawing.Size(90, 17);
+            this.radioButton9.TabIndex = 7;
+            this.radioButton9.Text = "Клика графа";
+            this.radioButton9.UseVisualStyleBackColor = true;
+            this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
             // 
             // radioButton8
             // 
@@ -1898,7 +1909,7 @@
             this.deikstr_panel.Controls.Add(this.button10);
             this.deikstr_panel.Controls.Add(this.label16);
             this.deikstr_panel.Controls.Add(this.numericUpDown2);
-            this.deikstr_panel.Location = new System.Drawing.Point(1200, 216);
+            this.deikstr_panel.Location = new System.Drawing.Point(812, 398);
             this.deikstr_panel.Name = "deikstr_panel";
             this.deikstr_panel.Size = new System.Drawing.Size(294, 393);
             this.deikstr_panel.TabIndex = 124;
@@ -2063,7 +2074,7 @@
             this.mpf_panel.Controls.Add(this.button13);
             this.mpf_panel.Controls.Add(this.button12);
             this.mpf_panel.Controls.Add(this.richTextBox3);
-            this.mpf_panel.Location = new System.Drawing.Point(1158, 268);
+            this.mpf_panel.Location = new System.Drawing.Point(1145, 320);
             this.mpf_panel.Name = "mpf_panel";
             this.mpf_panel.Size = new System.Drawing.Size(286, 333);
             this.mpf_panel.TabIndex = 127;
@@ -2129,22 +2140,13 @@
             // 
             // clicue_panel
             // 
+            this.clicue_panel.Controls.Add(this.listBox3);
             this.clicue_panel.Controls.Add(this.button15);
-            this.clicue_panel.Controls.Add(this.richTextBox5);
             this.clicue_panel.Location = new System.Drawing.Point(534, 7);
             this.clicue_panel.Name = "clicue_panel";
             this.clicue_panel.Size = new System.Drawing.Size(255, 333);
             this.clicue_panel.TabIndex = 129;
             this.clicue_panel.Visible = false;
-            // 
-            // richTextBox5
-            // 
-            this.richTextBox5.Location = new System.Drawing.Point(9, 54);
-            this.richTextBox5.Name = "richTextBox5";
-            this.richTextBox5.ReadOnly = true;
-            this.richTextBox5.Size = new System.Drawing.Size(141, 171);
-            this.richTextBox5.TabIndex = 4;
-            this.richTextBox5.Text = "";
             // 
             // button15
             // 
@@ -2152,20 +2154,18 @@
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(221, 23);
             this.button15.TabIndex = 5;
-            this.button15.Text = "Показать клику графа";
+            this.button15.Text = "Показать клики графа";
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
-            // radioButton9
+            // listBox3
             // 
-            this.radioButton9.AutoSize = true;
-            this.radioButton9.Location = new System.Drawing.Point(269, 65);
-            this.radioButton9.Name = "radioButton9";
-            this.radioButton9.Size = new System.Drawing.Size(90, 17);
-            this.radioButton9.TabIndex = 7;
-            this.radioButton9.Text = "Клика графа";
-            this.radioButton9.UseVisualStyleBackColor = true;
-            this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(9, 57);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(131, 173);
+            this.listBox3.TabIndex = 6;
+            this.listBox3.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -2405,7 +2405,7 @@
         private System.Windows.Forms.RadioButton radioButton9;
         private System.Windows.Forms.Panel clicue_panel;
         private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.RichTextBox richTextBox5;
+        private System.Windows.Forms.ListBox listBox3;
     }
 }
 

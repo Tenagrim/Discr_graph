@@ -15,7 +15,7 @@ namespace Discr_graph
     public partial class Form1 : Form
     {
         Graph g = null;
-        Graph gPar = null;
+        //Graph gPar = null;
         List<Graph> savedG = new List<Graph>();
         List<string> namesSaved = new List<string>();
         List<int> path = new List<int>();
@@ -29,6 +29,7 @@ namespace Discr_graph
         bool drawWeights = false;
         bool drawCores = false;
         bool drawLewels = false;
+        bool drawCore = false;
 
 
         public Form1()
@@ -43,6 +44,7 @@ namespace Discr_graph
             deikstr_panel.Location = matrix_panel.Location;
             mpf_panel.Location = matrix_panel.Location;
             components_panel.Location = matrix_panel.Location;
+            clicue_panel.Location = matrix_panel.Location;
         }
 
         private void Action1()
@@ -109,11 +111,24 @@ namespace Discr_graph
                         Update(sender, e);
                     }
                 }
+                else if (path.Count != 0 && drawCore)
+                {
+                    try
+                    {
+                        GD2.DrawGraph(e, g, path, false, false);
+                    }
+                    catch (NoPathException)
+                    {
+                        ShowError("Нет такого пути");
+                        path.Clear();
+                        Update(sender, e);
+                    }
+                }
                 else if (path.Count != 0 && drawPath)
                 {
                     try
                     {
-                        GD2.DrawGraph(e, g, path, true);
+                        GD2.DrawGraph(e, g, path, true, true);
                     }
                     catch (NoPathException)
                     {
@@ -147,6 +162,7 @@ namespace Discr_graph
             drawPath = false;
             drawEdges = false;
             drawLewels = false;
+            drawCore = false;
             path.Clear();
             paThs1.Clear();
             cores.Clear();
@@ -186,7 +202,7 @@ namespace Discr_graph
         {
             switch (n)
             {
-                case 1:                 
+                case 1:
                     matrix_panel.Visible = true;
                     deikstr_panel.Visible = false;
                     crascal_panel.Visible = false;
@@ -194,6 +210,7 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 2:
                     matrix_panel.Visible = false;
@@ -203,6 +220,7 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 3:
                     matrix_panel.Visible = false;
@@ -212,6 +230,7 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 4:
                     matrix_panel.Visible = false;
@@ -221,6 +240,7 @@ namespace Discr_graph
                     core_panel.Visible = true;
                     mpf_panel.Visible = false;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 5:
                     matrix_panel.Visible = false;
@@ -230,6 +250,7 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 6:
                     matrix_panel.Visible = false;
@@ -239,6 +260,7 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = true;
                     components_panel.Visible = false;
+                    clicue_panel.Visible = false;
                     break;
                 case 7:
                     matrix_panel.Visible = false;
@@ -248,6 +270,17 @@ namespace Discr_graph
                     core_panel.Visible = false;
                     mpf_panel.Visible = false;
                     components_panel.Visible = true;
+                    clicue_panel.Visible = false;
+                    break;
+                case 8:
+                    matrix_panel.Visible = false;
+                    deikstr_panel.Visible = false;
+                    crascal_panel.Visible = false;
+                    saveLoad_panel.Visible = false;
+                    core_panel.Visible = false;
+                    mpf_panel.Visible = false;
+                    components_panel.Visible = false;
+                    clicue_panel.Visible = true;
                     break;
             }
         }
@@ -389,6 +422,7 @@ namespace Discr_graph
             paThs1.Clear();
 
             g = savedG[listBox1.SelectedIndex];
+            orgraph_ch1.Checked = g.isOrGraph;
             Action1();
             GraphToMatrix(g);
         }
@@ -539,6 +573,14 @@ namespace Discr_graph
                 richTextBox4.Text += "\n";
             }
         }
+        private void ShowCliqueInfo(List<string> textres)
+        {
+            listBox3.Items.Clear();
+            foreach (var i in textres)
+            {
+                listBox3.Items.Add(i);
+            }
+        }
         private void Prim()
         {
             edges.Clear();
@@ -571,7 +613,7 @@ namespace Discr_graph
         private void ShowMPF()
         {
             if (g == null) { ShowError("Сначала создайте граф"); return; }
-                        if (g.isOrGraph == false) { ShowError("Нужен орграф"); return; }
+            if (g.isOrGraph == false) { ShowError("Нужен орграф"); return; }
             ClearDrawArgs();
             string mpf = "";
             levels.Clear();
@@ -582,14 +624,22 @@ namespace Discr_graph
             catch (ArgumentException)
             {
                 ShowError("Привести данный граф к ярусно-параллельной форме невозможно, так как он имеет цикл");
-            }                  
+            }
             richTextBox3.Text = mpf;
             drawLewels = true;
             Action1();
         }
         private void Clique()
         {
-
+            if (g == null) { ShowError("Сначала создайте граф"); return; }
+            if (g.isOrGraph == true) { ShowError("Нужен неорграф"); return; }
+            ClearDrawArgs();
+            List<string> textRes = new List<string>();
+            cores.Clear();
+            Algorythms.Clique(g, cores, textRes);
+            drawCores = true;
+            ShowCliqueInfo(textRes);
+            Action1();
         }
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -811,7 +861,7 @@ namespace Discr_graph
         private void radioButton9_CheckedChanged(object sender, EventArgs e)
         {
             showTask(8);
-            richTextBox5.Text = "";
+            listBox3.Items.Clear();
             ClearDrawArgs();
             Action1();
         }
@@ -819,6 +869,14 @@ namespace Discr_graph
         private void button15_Click(object sender, EventArgs e)
         {
             Clique();
+        }
+
+        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            drawCores = false;
+            path = cores[listBox3.SelectedIndex];
+            drawCore = true;
+            Action1();
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

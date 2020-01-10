@@ -44,7 +44,27 @@ namespace Discr_graph
                 DrawWeights(e, g);
         }
 
-        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds, bool path) // Нарисовать граф. Вершины из списка выделяются как подграф если path = false или как путь если path = true
+        public static void DrawGraph(PaintEventArgs e, Graph g, List<int> inds, bool path,bool weights) // Нарисовать граф. Вершины из списка выделяются как подграф если path = false или как путь если path = true
+        {
+            if (g.Positions == null)
+                CalcPositions(g);
+            DrawLines(e, g, inds, path);
+            DrawNodes(e, g, inds);
+            DrawNames(e, g, inds);
+            if (weights)
+            {
+                if (path)
+                {
+                    if (!g.isOrGraph)
+                        DrawWeightsPathNOR(e, g, inds);
+                    else
+                        DrawWeightsPathOR(e, g, inds);
+                }
+                else
+                    DrawWeights(e, g, inds);
+            }
+        }
+        public static void DrawGraphWithSubgraph(PaintEventArgs e, Graph g, List<int> inds, bool path) // Нарисовать граф. Вершины из списка выделяются как подграф если path = false или как путь если path = true
         {
             if (g.Positions == null)
                 CalcPositions(g);
